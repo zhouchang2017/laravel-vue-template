@@ -12,5 +12,16 @@ return [
     /**
      * Your seller id.
      */
-    'seller_id' =>env('AMAZON_AWS_SELLER_ID','')
+    'seller_id' =>env('AMAZON_AWS_SELLER_ID',''),
+
+    'service_locale'=>env('AMAZON_AWS_SERVICE_LOCALE','us'),
+
+    'services_url'=>[
+        'us'=>'https://mws.amazonservices.com',
+        'eu'=>'https://mws-eu.amazonservices.com',
+        'jp'=>'https://mws.amazonservices.jp',
+        'cn'=>'https://mws.amazonservices.com.cn'
+    ],
+    'service_version'=>env('SERVICE_VERSION','2010-10-01'),
+    'user_agent'=>'FBAInventoryServiceMWS PHP5 Library'
 ];

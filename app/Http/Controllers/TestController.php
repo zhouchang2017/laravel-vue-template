@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Mws;
+use App\Services\MWS;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -13,7 +13,7 @@ class TestController extends Controller
      * TestController constructor.
      * @param $mws
      */
-    public function __construct(Mws $mws)
+    public function __construct(MWS $mws)
     {
         $this->mws = $mws;
     }
