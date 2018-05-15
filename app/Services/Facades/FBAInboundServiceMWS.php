@@ -2,6 +2,7 @@
 namespace App\Services\Facades;
 
 use App\Services\DataType\CreateInboundShipmentPlanRequest;
+use App\Services\DataType\GetServiceStatusRequest;
 
 interface  FBAInboundServiceMWS
 {
@@ -245,7 +246,7 @@ interface  FBAInboundServiceMWS
      *
      * @throws FBAInboundServiceMWS_Exception
      */
-    public function getServiceStatus($request);
+    public function getServiceStatus(GetServiceStatusRequest $request);
 
 
     /**

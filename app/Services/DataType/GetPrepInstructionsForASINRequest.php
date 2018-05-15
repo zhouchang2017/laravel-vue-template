@@ -14,6 +14,7 @@ class GetPrepInstructionsForASINRequest extends Base
             'AsinList'          => [ 'FieldValue' => null, 'FieldType' => 'AsinList' ],
             'ShipToCountryCode' => [ 'FieldValue' => null, 'FieldType' => 'string' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

@@ -9,15 +9,21 @@
 namespace App\Services;
 
 
+use App\Services\DataType\ResponseHeaderMetadata;
 use App\Services\Exception\FBAInboundServiceMWSException;
+use App\Services\Facades\ServiceMWSUrlFacade;
+use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request as Http;
 
-abstract class MWS
+abstract class MWS implements ServiceMWSUrlFacade
 {
-    const SERVICE_VERSION = '2010-10-01';
-    const MWS_CLIENT_VERSION = '2014-09-30';
+    protected $serviceVersion = '2010-10-01';
+    const MWS_CLIENT_VERSION = '2016-10-05';
 
     private $_awsAccessKeyId = null;
     private $_awsSecretAccessKey = null;
+    protected $_serviceUrl = null;
     private $_config = [ 'ServiceURL'       => null,
                          'UserAgent'        => 'FBAInventoryServiceMWS PHP5 Library',
                          'SignatureVersion' => 2,
@@ -30,11 +36,19 @@ abstract class MWS
                          'Headers'          => [],
     ];
 
-    public function __construct()
+    public function __construct($serviceVersion)
     {
+        $this->setServiceUrl();
+        $this->serviceVersion = $serviceVersion;
         $this->_awsAccessKeyId = config('amazon.aws_access_key_id');
         $this->_awsSecretAccessKey = config('amazon.aws_secret_access_key');
+        $this->_serviceUrl = $this->getServiceUrl();
         $this->setUserAgentHeader('online store by laravel', 'dev0.1', $attributes = null);
+    }
+
+    protected function getServiceLocaleUrl()
+    {
+        return config('amazon.services_url')[config('amazon.service_locale')];
     }
 
     public function setUserAgentHeader(
@@ -135,7 +149,7 @@ abstract class MWS
     {
         $parameters['AWSAccessKeyId'] = $this->_awsAccessKeyId;
         $parameters['Timestamp'] = $this->_getFormattedTimestamp();
-        $parameters['Version'] = self::SERVICE_VERSION;
+        $parameters['Version'] = $this->serviceVersion;
         $parameters['SignatureVersion'] = $this->_config['SignatureVersion'];
         if ($parameters['SignatureVersion'] > 1) {
             $parameters['SignatureMethod'] = $this->_config['SignatureMethod'];
@@ -155,7 +169,7 @@ abstract class MWS
             $parameters['SignatureMethod'] = $algorithm;
             $stringToSign = $this->_calculateStringToSignV2($parameters);
         } else {
-            throw new \Exception("Invalid Signature Version specified");
+            throw new Exception("Invalid Signature Version specified");
         }
         return $this->_sign($stringToSign, $key, $algorithm);
     }
@@ -167,7 +181,7 @@ abstract class MWS
         } else if ($algorithm === 'HmacSHA256') {
             $hash = 'sha256';
         } else {
-            throw new \Exception ("Non-supported signing method specified");
+            throw new Exception ("Non-supported signing method specified");
         }
         return base64_encode(
             hash_hmac($hash, $data, $key, true)
@@ -178,7 +192,7 @@ abstract class MWS
     {
         $data = 'POST';
         $data .= "\n";
-        $endpoint = parse_url($this->_config['ServiceURL']);
+        $endpoint = parse_url($this->getServiceUrl());
         $data .= $endpoint['host'];
         $data .= "\n";
         $uri = array_key_exists('path', $endpoint) ? $endpoint['path'] : null;
@@ -214,13 +228,14 @@ abstract class MWS
     protected function _invoke(array $parameters)
     {
         try {
-            if (empty($this->_config['ServiceURL'])) {
-                require_once (dirname(__FILE__) . '/Exception.php');
-                throw new FBAInboundServiceMWSException(
+            if (empty($this->getServiceUrl())) {
+
+                return new FBAInboundServiceMWSException(
                     array ('ErrorCode' => 'InvalidServiceURL',
                            'Message' => "Missing serviceUrl configuration value. You may obtain a list of valid MWS URLs by consulting the MWS Developer's Guide, or reviewing the sample code published along side this library."));
             }
             $parameters = $this->_addRequiredParameters($parameters);
+
             $retries = 0;
             for (;;) {
                 $response = $this->_httpPost($parameters);
@@ -237,10 +252,30 @@ abstract class MWS
             }
         } catch (FBAInboundServiceMWSException $se) {
             throw $se;
-        } catch (\Exception $t) {
-            require_once (dirname(__FILE__) . '/Exception.php');
+        } catch (Exception $t) {
             throw new FBAInboundServiceMWSException(array('Exception' => $t, 'Message' => $t->getMessage()));
         }
+    }
+
+    private function _reportAnyErrors($responseBody, $status, $responseHeaderMetadata, Exception $e =  null)
+    {
+        $exProps = array();
+        $exProps["StatusCode"] = $status;
+        $exProps["ResponseHeaderMetadata"] = $responseHeaderMetadata;
+
+        libxml_use_internal_errors(true);  // Silence XML parsing errors
+        $xmlBody = simplexml_load_string($responseBody);
+
+        if ($xmlBody !== false) {  // Check XML loaded without errors
+            $exProps["XML"] = $responseBody;
+            $exProps["ErrorCode"] = $xmlBody->Error->Code;
+            $exProps["Message"] = $xmlBody->Error->Message;
+            $exProps["ErrorType"] = !empty($xmlBody->Error->Type) ? $xmlBody->Error->Type : "Unknown";
+            $exProps["RequestId"] = !empty($xmlBody->RequestID) ? $xmlBody->RequestID : $xmlBody->RequestId; // 'd' in RequestId is sometimes capitalized
+        } else { // We got bad XML in response, just throw a generic exception
+            $exProps["Message"] = "Internal Error";
+        }
+        return new FBAInboundServiceMWSException($exProps);
     }
 
     private function _pauseOnRetry($retries)
@@ -257,7 +292,7 @@ abstract class MWS
     {
         $config = $this->_config;
         $query = $this->_getParametersAsString($parameters);
-        $url = parse_url ($config['ServiceURL']);
+        $url = parse_url ($this->getServiceUrl());
         $uri = array_key_exists('path', $url) ? $url['path'] : null;
         if (!isset ($uri)) {
             $uri = "/";
@@ -284,6 +319,13 @@ abstract class MWS
             }
             $allHeadersStr[] = $str;
         }
+//        $allHeaders['UserAgent'] = $this->_config['UserAgent'];
+//        $fetchUrl = $scheme . $url['host'] . $uri;
+//        dd($allHeaders);
+//        $req = new Http('POST',$fetchUrl,$allHeaders,$query);
+//        $client = new Client;
+//        $response = $client->send($req, ['timeout' => 2]);
+//        dd((string)($response->getBody()));
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $scheme . $url['host'] . $uri);
@@ -308,11 +350,10 @@ abstract class MWS
         $response = curl_exec($ch);
 
         if($response === false) {
-            require_once (dirname(__FILE__) . '/Exception.php');
             $exProps["Message"] = curl_error($ch);
             $exProps["ErrorType"] = "HTTP";
             curl_close($ch);
-            throw new FBAInboundServiceMWS_Exception($exProps);
+            throw new Exception($exProps);
         }
 
         curl_close($ch);
@@ -346,10 +387,9 @@ abstract class MWS
 
         //If the body is null here then we were unable to parse the response and will throw an exception
         if($body == null){
-            require_once (dirname(__FILE__) . '/Exception.php');
             $exProps["Message"] = "Failed to parse valid HTTP response (" . $response . ")";
             $exProps["ErrorType"] = "HTTP";
-            throw new FBAInboundServiceMWS_Exception($exProps);
+            throw new Exception($exProps);
         }
 
         return array(
@@ -386,8 +426,7 @@ abstract class MWS
             }
         }
 
-        require_once(dirname(__FILE__) . '/Model/ResponseHeaderMetadata.php');
-        return new FBAInboundServiceMWS_Model_ResponseHeaderMetadata(
+        return new ResponseHeaderMetadata(
             $headers['x-mws-request-id'],
             $headers['x-mws-response-context'],
             $headers['x-mws-timestamp'],

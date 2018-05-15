@@ -16,6 +16,7 @@ class UpdateInboundShipmentRequest extends Base
             'InboundShipmentHeader' => [ 'FieldValue' => null, 'FieldType' => 'InboundShipmentHeader' ],
             'InboundShipmentItems'  => [ 'FieldValue' => null, 'FieldType' => 'InboundShipmentItemList' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

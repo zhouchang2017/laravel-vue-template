@@ -15,6 +15,7 @@ class ConfirmPreorderRequest extends Base
             'ShipmentId'   => [ 'FieldValue' => null, 'FieldType' => 'string' ],
             'NeedByDate'   => [ 'FieldValue' => null, 'FieldType' => 'string' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

@@ -27,7 +27,7 @@ abstract class Base
             } elseif ($this->_isDOMElement($data)) {
                 $this->_fromDOMElement($data);
             } else {
-                throw new Exception ("Unable to construct from provided data. Please be sure to pass associative array or DOMElement");
+                throw new \Exception ("Unable to construct from provided data. Please be sure to pass associative array or DOMElement");
             }
         }
     }
@@ -50,6 +50,7 @@ abstract class Base
         $getter = "get$propertyName";
         return $this->$getter();
     }
+
 
     /**
      * Support for virtual properties setters.
@@ -85,9 +86,9 @@ abstract class Base
      *
      * @param DOMElement $dom XML element to construct from
      */
-    private function _fromDOMElement(DOMElement $dom)
+    private function _fromDOMElement(\DOMElement $dom)
     {
-        $xpath = new DOMXPath($dom->ownerDocument);
+        $xpath = new \DOMXPath($dom->ownerDocument);
 
         foreach ($this->_fields as $fieldName => $field) {
             $fieldType = $field['FieldType'];
@@ -228,7 +229,7 @@ abstract class Base
         return $this->_toQueryParameterArray("");
     }
 
-    protected function _toQueryParameterArray($prefix) {
+    private function _toQueryParameterArray($prefix) {
         $arr = array();
         foreach($this->_fields as $fieldName => $fieldAttrs) {
             $fieldType = $fieldAttrs['FieldType'];
@@ -409,7 +410,7 @@ abstract class Base
      */
     private function _isDOMElement($var)
     {
-        return $var instanceof DOMElement;
+        return $var instanceof \DOMElement;
     }
 
     /**

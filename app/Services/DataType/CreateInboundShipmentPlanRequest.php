@@ -17,6 +17,7 @@ class CreateInboundShipmentPlanRequest extends Base
             'ShipToCountrySubdivisionCode'    => [ 'FieldValue' => null, 'FieldType' => 'string' ],
             'InboundShipmentPlanRequestItems' => [ 'FieldValue' => null, 'FieldType' => 'InboundShipmentPlanRequestItemList' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

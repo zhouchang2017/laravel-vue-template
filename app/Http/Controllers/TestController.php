@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\MWS;
+use App\Services\DataType\CreateInboundShipmentPlanRequest;
+use App\Services\DataType\GetServiceStatusRequest;
+use App\Services\FulfillmentInboundShipment;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
-    protected $mws;
+    protected $fba;
 
     /**
      * TestController constructor.
-     * @param $mws
+     * @param $fba
      */
-    public function __construct(MWS $mws)
+    public function __construct(FulfillmentInboundShipment $fba)
     {
-        $this->mws = $mws;
+        $this->fba = $fba;
     }
 
-    public function index()
+    public function index(GetServiceStatusRequest $request)
     {
-        dd($this->mws->build());
+        $response = $this->fba->getServiceStatus($request);
+
     }
 }

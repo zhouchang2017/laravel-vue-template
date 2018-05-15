@@ -13,6 +13,7 @@ class GetServiceStatusRequest extends Base
             'MWSAuthToken' => [ 'FieldValue' => null, 'FieldType' => 'string' ],
             'Marketplace'  => [ 'FieldValue' => null, 'FieldType' => 'string' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

@@ -13,6 +13,7 @@ class ListInboundShipmentsByNextTokenRequest extends Base
             'Marketplace'  => [ 'FieldValue' => null, 'FieldType' => 'string' ],
             'NextToken'    => [ 'FieldValue' => null, 'FieldType' => 'string' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

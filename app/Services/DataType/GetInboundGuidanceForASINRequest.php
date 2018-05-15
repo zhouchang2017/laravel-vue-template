@@ -14,6 +14,7 @@ class GetInboundGuidanceForASINRequest extends Base
             'ASINList'      => [ 'FieldValue' => null, 'FieldType' => 'ASINList' ],
             'MarketplaceId' => [ 'FieldValue' => null, 'FieldType' => 'string' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

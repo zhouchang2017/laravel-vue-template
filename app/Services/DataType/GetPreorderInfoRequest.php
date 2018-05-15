@@ -13,6 +13,7 @@ class GetPreorderInfoRequest extends Base
             'Marketplace'  => [ 'FieldValue' => null, 'FieldType' => 'string' ],
             'ShipmentId'   => [ 'FieldValue' => null, 'FieldType' => 'string' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

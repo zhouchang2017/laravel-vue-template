@@ -14,6 +14,7 @@ class GetPalletLabelsRequest extends Base
             'PageType'        => [ 'FieldValue' => null, 'FieldType' => 'string' ],
             'NumberOfPallets' => [ 'FieldValue' => null, 'FieldType' => 'int' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

@@ -163,14 +163,14 @@ class GetServiceStatusResponse extends Base
      */
     public static function fromXML($xml)
     {
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         $dom->loadXML($xml);
-        $xpath = new DOMXPath($dom);
+        $xpath = new \DOMXPath($dom);
         $response = $xpath->query("//*[local-name()='GetServiceStatusResponse']");
         if ($response->length == 1) {
             return new GetServiceStatusResponse(($response->item(0)));
         } else {
-            throw new Exception ("Unable to construct GetServiceStatusResponse from provided XML. 
+            throw new \Exception ("Unable to construct GetServiceStatusResponse from provided XML. 
                                   Make sure that GetServiceStatusResponse is a root element");
         }
     }

@@ -14,6 +14,7 @@ class GetUniquePackageLabelsRequest extends Base
             'PageType'             => [ 'FieldValue' => null, 'FieldType' => 'string' ],
             'PackageLabelsToPrint' => [ 'FieldValue' => null, 'FieldType' => 'PackageIdentifiers' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

@@ -13,6 +13,7 @@ class TransportHeader extends Base
             'IsPartnered'  => [ 'FieldValue' => null, 'FieldType' => 'bool' ],
             'ShipmentType' => [ 'FieldValue' => null, 'FieldType' => 'string' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

@@ -15,6 +15,7 @@ class PutTransportContentRequest extends Base
             'ShipmentType'     => [ 'FieldValue' => null, 'FieldType' => 'string' ],
             'TransportDetails' => [ 'FieldValue' => null, 'FieldType' => 'TransportDetailInput' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

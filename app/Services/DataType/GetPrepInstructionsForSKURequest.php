@@ -13,6 +13,7 @@ class GetPrepInstructionsForSKURequest extends Base
             'SellerSKUList'     => [ 'FieldValue' => null, 'FieldType' => 'SellerSKUList' ],
             'ShipToCountryCode' => [ 'FieldValue' => null, 'FieldType' => 'string' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

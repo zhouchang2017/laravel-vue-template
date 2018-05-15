@@ -14,6 +14,7 @@ class GetPackageLabelsRequest extends Base
             'PageType'         => [ 'FieldValue' => null, 'FieldType' => 'string' ],
             'NumberOfPackages' => [ 'FieldValue' => null, 'FieldType' => 'int' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

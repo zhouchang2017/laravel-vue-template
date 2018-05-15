@@ -12,6 +12,7 @@ class GetInboundGuidanceForSKURequest extends Base
             'SellerSKUList' => [ 'FieldValue' => null, 'FieldType' => 'SellerSKUList' ],
             'MarketplaceId' => [ 'FieldValue' => null, 'FieldType' => 'string' ],
         ];
+        $this->setSellerId(config('amazon.seller_id'));
         parent::__construct($data);
     }
 

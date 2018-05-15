@@ -9,14 +9,28 @@
 namespace App\Services;
 
 use App\Services\DataType\CreateInboundShipmentPlanRequest;
+use App\Services\DataType\CreateInboundShipmentPlanResponse;
+use App\Services\DataType\GetServiceStatusRequest;
+use App\Services\DataType\GetServiceStatusResponse;
 use App\Services\Facades\FBAInboundServiceMWS;
 
 class FulfillmentInboundShipment extends MWS implements FBAInboundServiceMWS
 {
+    const SERVICE_VERSION = '2010-10-01';
 
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct(self::SERVICE_VERSION);
+    }
+
+    public function setServiceUrl()
+    {
+        $this->_serviceUrl = $this->getServiceLocaleUrl() . '/FulfillmentInboundShipment/'.self::SERVICE_VERSION;
+    }
+
+    public function getServiceUrl()
+    {
+        return $this->_serviceUrl;
     }
 
     public function confirmPreorder($request)
@@ -39,13 +53,12 @@ class FulfillmentInboundShipment extends MWS implements FBAInboundServiceMWS
 
     public function createInboundShipmentPlan(CreateInboundShipmentPlanRequest $request)
     {
-        $request->setSellerId(config('seller_id'));
         $parameters = $request->toQueryParameterArray();
         $parameters['Action'] = 'CreateInboundShipmentPlan';
+
         $httpResponse = $this->_invoke($parameters);
 
-        require_once (dirname(__FILE__) . '/Model/CreateInboundShipmentPlanResponse.php');
-        $response = FBAInboundServiceMWS_Model_CreateInboundShipmentPlanResponse::fromXML($httpResponse['ResponseBody']);
+        $response = CreateInboundShipmentPlanResponse::fromXML($httpResponse['ResponseBody']);
         $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
         return $response;
     }
@@ -104,9 +117,20 @@ class FulfillmentInboundShipment extends MWS implements FBAInboundServiceMWS
     }
 
 
-    public function getServiceStatus($request)
+    public function getServiceStatus(GetServiceStatusRequest $request)
     {
+        $parameters = $request->toQueryParameterArray();
+        $parameters['Action'] = 'GetServiceStatus';
+        $httpResponse = $this->_invoke($parameters);
+        $response = GetServiceStatusResponse::fromXML($httpResponse['ResponseBody']);
 
+        $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
+        $dom = new \DOMDocument();
+        $dom->loadXML($response->toXML());
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        echo $dom->saveXML();
+        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
     }
 
     public function getTransportContent($request)
