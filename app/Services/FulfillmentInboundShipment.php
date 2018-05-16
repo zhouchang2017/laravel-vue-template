@@ -25,12 +25,12 @@ class FulfillmentInboundShipment extends MWS implements FBAInboundServiceMWS
 
     public function setServiceUrl()
     {
-        $this->_serviceUrl = $this->getServiceLocaleUrl() . '/FulfillmentInboundShipment/'.self::SERVICE_VERSION;
+        $this->serviceUrl = $this->getServiceLocaleUrl() . '/FulfillmentInboundShipment/'.self::SERVICE_VERSION;
     }
 
     public function getServiceUrl()
     {
-        return $this->_serviceUrl;
+        return $this->serviceUrl;
     }
 
     public function confirmPreorder($request)
@@ -56,7 +56,7 @@ class FulfillmentInboundShipment extends MWS implements FBAInboundServiceMWS
         $parameters = $request->toQueryParameterArray();
         $parameters['Action'] = 'CreateInboundShipmentPlan';
 
-        $httpResponse = $this->_invoke($parameters);
+        $httpResponse = $this->invoke($parameters);
 
         $response = CreateInboundShipmentPlanResponse::fromXML($httpResponse['ResponseBody']);
         $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
@@ -116,21 +116,32 @@ class FulfillmentInboundShipment extends MWS implements FBAInboundServiceMWS
 
     }
 
+    public function xmlToArray($xml)
+    {
+        //禁止引用外部xml实体
+        libxml_disable_entity_loader(true);
+        $values = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        return $values;
+    }
+
 
     public function getServiceStatus(GetServiceStatusRequest $request)
     {
         $parameters = $request->toQueryParameterArray();
         $parameters['Action'] = 'GetServiceStatus';
-        $httpResponse = $this->_invoke($parameters);
-        $response = GetServiceStatusResponse::fromXML($httpResponse['ResponseBody']);
+        $httpResponse = $this->invoke($parameters);
+        $t = $this->xmlToArray($httpResponse);
+//        $t = $this->xmlToArray($httpResponse['ResponseBody']);
+        dd($t);
+//        $response = GetServiceStatusResponse::fromXML($httpResponse['ResponseBody']);
 
-        $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
-        $dom = new \DOMDocument();
-        $dom->loadXML($response->toXML());
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+//        $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
+//        $dom = new \DOMDocument();
+//        $dom->loadXML($response->toXML());
+//        $dom->preserveWhiteSpace = false;
+//        $dom->formatOutput = true;
+//        echo $dom->saveXML();
+//        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
     }
 
     public function getTransportContent($request)
