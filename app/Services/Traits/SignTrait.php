@@ -52,11 +52,12 @@ trait SignTrait
 
     private function getParametersAsString(array $parameters)
     {
-        $queryParameters = [];
-        foreach ($parameters as $key => $value) {
-            $queryParameters[] = $key . '=' . $this->_urlencode($value);
-        }
-        return implode('&', $queryParameters);
+        return http_build_query($parameters);
+//        $queryParameters = [];
+//        foreach ($parameters as $key => $value) {
+//            $queryParameters[] = $key . '=' . $this->_urlencode($value);
+//        }
+//        return implode('&', $queryParameters);
     }
 
     private function _urlencode($value) {

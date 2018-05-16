@@ -12,6 +12,8 @@
 */
 
 Route::get('/test', 'TestController@index');
+Route::get('/products', 'TestController@products');
+Route::get('/products/match', 'TestController@byAsins');
 
 
 Route::get('/', function () {

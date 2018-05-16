@@ -81,7 +81,8 @@ abstract class MWS implements ServiceMWSUrlFacade
      */
     private function addRequiredParameters(array $parameters = [])
     {
-        $parameters['AWSAccessKeyId'] = config('amazon.aws_access_key_id');;
+        $parameters['SellerId'] = config('amazon.seller_id');
+        $parameters['AWSAccessKeyId'] = config('amazon.aws_access_key_id');
         $parameters['Timestamp'] = $this->getFormattedTimestamp();
         $parameters['Version'] = $this->serviceVersion;
         $parameters['SignatureVersion'] = self::SIGNATURE_VERSION;
@@ -125,18 +126,27 @@ abstract class MWS implements ServiceMWSUrlFacade
         $headers['UserAgent'] = $this->userAgent;
 
         $client = new Client;
-
         try {
             $response = $client->request('POST', $this->getServiceUrl(),[
                 'form_params'=>$parameters,
                 'headers'=>$headers
             ]);
+
             return ((string)($response->getBody()));
         } catch (RequestException $e) {
+            dd(Psr7\str($e->getResponse()));
             info(Psr7\str($e->getRequest()));
             if ($e->hasResponse()) {
                 info(Psr7\str($e->getResponse()));
             }
         }
+    }
+
+    public function xmlToArray($xml)
+    {
+        //禁止引用外部xml实体
+        libxml_disable_entity_loader(true);
+        $values = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        return $values;
     }
 }

@@ -6,6 +6,7 @@ namespace App\Services\DataType;
 class ASINInboundGuidance extends Base
 {
 
+
     public function __construct($data = null)
     {
         $this->_fields = [
