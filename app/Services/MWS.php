@@ -9,7 +9,6 @@
 namespace App\Services;
 
 
-use App\Services\DataType\ResponseHeaderMetadata;
 use App\Services\Exception\FBAInboundServiceMWSException;
 use App\Services\Facades\ServiceMWSUrlFacade;
 use App\Services\Traits\SignTrait;
@@ -31,6 +30,7 @@ abstract class MWS implements ServiceMWSUrlFacade
      *
      */
     const MWS_CLIENT_VERSION = '2016-10-05';
+
     /**
      *
      */
@@ -53,18 +53,26 @@ abstract class MWS implements ServiceMWSUrlFacade
     /**
      * @var string
      */
-    protected $userAgent = 'FBAInventoryServiceMWS PHP5 Library';
+    protected $userAgent = null;
+
+    /**
+     * 自定义请求参数
+     * @var array
+     */
+    private $customRequestParams = [];
 
     /**
      * MWS constructor.
      * @param $serviceVersion
+     * @param array $customRequestParams
      */
-    public function __construct($serviceVersion)
+    public function __construct(string $serviceVersion,array $customRequestParams = [])
     {
         $this->setServiceUrl();
+        $this->customRequestParams = $customRequestParams;
         $this->serviceVersion = $serviceVersion;
         $this->serviceUrl = $this->getServiceUrl();
-        $this->setUserAgentHeader('online store by laravel', 'dev0.1', $attributes = null);
+        $this->setUserAgentHeader(config('amazon.app_name'), 'dev0.1', $attributes = null);
     }
 
     /**
@@ -82,6 +90,8 @@ abstract class MWS implements ServiceMWSUrlFacade
     private function addRequiredParameters(array $parameters = [])
     {
         $parameters['SellerId'] = config('amazon.seller_id');
+//        $parameters['Merchant'] = config('amazon.merchant');
+        $parameters['MWSAuthToken'] = config('amazon.auth_token');
         $parameters['AWSAccessKeyId'] = config('amazon.aws_access_key_id');
         $parameters['Timestamp'] = $this->getFormattedTimestamp();
         $parameters['Version'] = $this->serviceVersion;
@@ -99,10 +109,7 @@ abstract class MWS implements ServiceMWSUrlFacade
         return gmdate("Y-m-d\TH:i:s.\\0\\0\\0\\Z", time());
     }
 
-    /**
-     * @param array $parameters
-     * @return FBAInboundServiceMWSException|string
-     */
+
     protected function invoke(array $parameters)
     {
             if (empty($this->getServiceUrl())) {
@@ -110,6 +117,7 @@ abstract class MWS implements ServiceMWSUrlFacade
                     array ('ErrorCode' => 'InvalidServiceURL',
                            'Message' => "Missing serviceUrl configuration value. You may obtain a list of valid MWS URLs by consulting the MWS Developer's Guide, or reviewing the sample code published along side this library."));
             }
+            $parameters = array_merge($parameters,$this->customRequestParams);
             $parameters = $this->addRequiredParameters($parameters);
             return $this->httpPost($parameters);
     }
@@ -124,24 +132,26 @@ abstract class MWS implements ServiceMWSUrlFacade
         $headers['Content-Type'] = "application/x-www-form-urlencoded; charset=utf-8"; // We need to make sure to set utf-8 encoding here
         $headers['Expect'] = null; // Don't expect 100 Continue
         $headers['UserAgent'] = $this->userAgent;
-
         $client = new Client;
         try {
             $response = $client->request('POST', $this->getServiceUrl(),[
                 'form_params'=>$parameters,
                 'headers'=>$headers
             ]);
-
             return ((string)($response->getBody()));
         } catch (RequestException $e) {
             dd(Psr7\str($e->getResponse()));
-            info(Psr7\str($e->getRequest()));
-            if ($e->hasResponse()) {
-                info(Psr7\str($e->getResponse()));
-            }
+
+//            if ($e->hasResponse()) {
+//                //
+//            }
         }
     }
 
+    /**
+     * @param $xml
+     * @return mixed
+     */
     public function xmlToArray($xml)
     {
         //禁止引用外部xml实体

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'app_name'=>env('AMAZON_AWS_APP_NAME',env('APP_NAME')),
     /**
      * Your access key.
      */
@@ -14,6 +15,10 @@ return [
      */
     'seller_id' =>env('AMAZON_AWS_SELLER_ID',''),
 
+    'merchant' =>env('AMAZON_AWS_MERCHANT'),
+
+    'auth_token'=>env('AMAZON_AWS_AUTH_TOKEN'),
+
     'service_locale'=>env('AMAZON_AWS_SERVICE_LOCALE','us'),
 
     'services_url'=>[
@@ -23,5 +28,6 @@ return [
         'cn'=>'https://mws.amazonservices.com.cn'
     ],
     'service_version'=>env('SERVICE_VERSION','2010-10-01'),
+
     'user_agent'=>'FBAInventoryServiceMWS PHP5 Library'
 ];

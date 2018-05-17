@@ -8,11 +8,9 @@
 
 namespace App\Services;
 
-use App\Services\DataType\CreateInboundShipmentPlanRequest;
 use App\Services\DataType\CreateInboundShipmentPlanResponse;
-use App\Services\DataType\GetServiceStatusRequest;
-use App\Services\DataType\GetServiceStatusResponse;
 use App\Services\Facades\FBAInboundServiceMWS;
+use Illuminate\Http\Request;
 
 class FulfillmentInboundShipment extends MWS implements FBAInboundServiceMWS
 {
@@ -51,7 +49,7 @@ class FulfillmentInboundShipment extends MWS implements FBAInboundServiceMWS
     }
 
 
-    public function createInboundShipmentPlan(CreateInboundShipmentPlanRequest $request)
+    public function createInboundShipmentPlan(Request $request)
     {
         $parameters = $request->toQueryParameterArray();
         $parameters['Action'] = 'CreateInboundShipmentPlan';
@@ -119,23 +117,11 @@ class FulfillmentInboundShipment extends MWS implements FBAInboundServiceMWS
 
 
 
-    public function getServiceStatus(GetServiceStatusRequest $request)
+    public function getServiceStatus(Request $request)
     {
-        $parameters = $request->toQueryParameterArray();
         $parameters['Action'] = 'GetServiceStatus';
         $httpResponse = $this->invoke($parameters);
-        $t = $this->xmlToArray($httpResponse);
-//        $t = $this->xmlToArray($httpResponse['ResponseBody']);
-        dd($t);
-//        $response = GetServiceStatusResponse::fromXML($httpResponse['ResponseBody']);
-
-//        $response->setResponseHeaderMetadata($httpResponse['ResponseHeaderMetadata']);
-//        $dom = new \DOMDocument();
-//        $dom->loadXML($response->toXML());
-//        $dom->preserveWhiteSpace = false;
-//        $dom->formatOutput = true;
-//        echo $dom->saveXML();
-//        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+        return $this->xmlToArray($httpResponse);
     }
 
     public function getTransportContent($request)

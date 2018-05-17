@@ -22,7 +22,7 @@ class Products extends MWS
 
     public function __construct()
     {
-        parent::__construct(self::SERVICE_VERSION);
+        parent::__construct(self::SERVICE_VERSION,['MarketplaceId'=>$this->marketplaceId]);
     }
 
     public function setServiceUrl()
@@ -38,7 +38,6 @@ class Products extends MWS
     public function ListMatchingProducts(Request $request)
     {
         $parameters['Query'] = $request->input('query');
-        $parameters['MarketplaceId'] = $this->marketplaceId;
         $parameters['Action'] = 'ListMatchingProducts';
 
         $httpResponse = $this->invoke($parameters);
@@ -48,6 +47,7 @@ class Products extends MWS
     public function GetMatchingProduct(Request $request)
     {
         $asins = is_array($request->input('asin')) ? $request->input('asin') : [$request->input('asin')];
+        // TODO 需要抽离，支持多参数
         $asinList = collect($asins)->reduce(function ($carry, $item) {
             $carry['ASINList.ASIN.'.(count($carry)+1)] = $item;
             return $carry;

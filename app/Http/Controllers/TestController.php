@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\DataType\Address;
 use App\Services\DataType\CreateInboundShipmentPlanRequest;
 use App\Services\DataType\GetServiceStatusRequest;
 use App\Services\FulfillmentInboundShipment;
@@ -25,9 +26,13 @@ class TestController extends Controller
         $this->products = $products;
     }
 
-    public function index(GetServiceStatusRequest $request)
+    public function index(Request $request)
     {
-        $response = $this->fba->getServiceStatus($request);
+         $address = $request->input('address');
+         $addr = new Address($address);
+         dump($addr->toArray());
+         die();
+         return $this->fba->getServiceStatus($request);
     }
 
     public function products(Request $request)
