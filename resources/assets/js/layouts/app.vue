@@ -1,7 +1,7 @@
 <template>
   <v-app light>
     <v-navigation-drawer
-      v-if="authenticated"
+      v-if="!authenticated"
       fixed
       v-model="drawer"
       app

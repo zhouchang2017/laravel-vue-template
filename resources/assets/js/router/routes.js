@@ -3,81 +3,96 @@ export default ({authGuard, guestGuard}) => [
 
   // Authenticated routes.
   ...authGuard([
+    // {
+    //   path: '/home',
+    //   name: 'home',
+    //   component: ()=>import('~/pages/home.vue')
+    // },
     {
-      path: '/home',
-      name: 'home',
-      component: ()=>import('~/pages/home.vue')
+      path: '/mws',
+      name: 'mws',
+      component: ()=>import('~/pages/index.vue')
     },
     {
-      path: '/nuxt',
-      name: 'nuxt.index',
-      component: ()=>import('~/pages/nuxt/index')
+      path: '/fulfillmentInboundShipment',
+      name: 'FulfillmentInboundShipment.Index',
+      component: ()=>import('~/pages/mws/fulfillmentInboundShipment/index.vue')
     },
     {
-      path: '/nuxt/create',
-      name: 'nuxt.create',
-      component: ()=>import('~/pages/nuxt/create')
+      path: '/fulfillmentInboundShipment/CreateInboundShipmentPlan',
+      name: 'FulfillmentInboundShipment.CreateInboundShipmentPlan',
+      component: ()=>import('~/pages/mws/fulfillmentInboundShipment/createInboundShipmentPlan.vue')
     },
-    {
-      path: '/nuxt/:id/edit',
-      name: 'nuxt.edit',
-      component: ()=>import('~/pages/nuxt/edit')
-    },
-    {
-      path: '/nuxt/settings',
-      name: 'nuxt.settings',
-      component: ()=>import('~/pages/nuxt/settings')
-    },
-    {
-      path: '/catelog',
-      name: 'catelog.index',
-      component: ()=>import('~/pages/catelog/index')
-    },
-    {
-      path: '/catelog/create',
-      name: 'catelog.create',
-      component: ()=>import('~/pages/catelog/create')
-    },
-    {
-      path: '/catelog/:id/edit',
-      name: 'catelog.edit',
-      component: ()=>import('~/pages/catelog/edit')
-    },
-    {
-      path: '/banner',
-      name: 'banner.index',
-      component: ()=>import('~/pages/banner/index')
-    },
-    {
-      path: '/banner/create',
-      name: 'banner.create',
-      component: ()=>import('~/pages/banner/create')
-    },
-    {
-      path: '/banner/:id/edit',
-      name: 'banner.edit',
-      component: ()=>import('~/pages/banner/edit')
-    },
-    {
-      path: '/settings',
-      component: ()=>import('~/pages/settings/index.vue'),
-      children: [
-        {
-          path: '',
-          redirect: {name: 'settings.profile'}
-        },
-        {
-          path: 'profile',
-          name: 'settings.profile',
-          component: ()=>import('~/pages/settings/profile.vue')
-        },
-        {
-          path: 'password',
-          name: 'settings.password',
-          component: ()=>import('~/pages/settings/password.vue')
-        }
-      ]
-    }
+    // {
+    //   path: '/nuxt',
+    //   name: 'nuxt.index',
+    //   component: ()=>import('~/pages/nuxt/index')
+    // },
+    // {
+    //   path: '/nuxt/create',
+    //   name: 'nuxt.create',
+    //   component: ()=>import('~/pages/nuxt/create')
+    // },
+    // {
+    //   path: '/nuxt/:id/edit',
+    //   name: 'nuxt.edit',
+    //   component: ()=>import('~/pages/nuxt/edit')
+    // },
+    // {
+    //   path: '/nuxt/settings',
+    //   name: 'nuxt.settings',
+    //   component: ()=>import('~/pages/nuxt/settings')
+    // },
+    // {
+    //   path: '/catelog',
+    //   name: 'catelog.index',
+    //   component: ()=>import('~/pages/catelog/index')
+    // },
+    // {
+    //   path: '/catelog/create',
+    //   name: 'catelog.create',
+    //   component: ()=>import('~/pages/catelog/create')
+    // },
+    // {
+    //   path: '/catelog/:id/edit',
+    //   name: 'catelog.edit',
+    //   component: ()=>import('~/pages/catelog/edit')
+    // },
+    // {
+    //   path: '/banner',
+    //   name: 'banner.index',
+    //   component: ()=>import('~/pages/banner/index')
+    // },
+    // {
+    //   path: '/banner/create',
+    //   name: 'banner.create',
+    //   component: ()=>import('~/pages/banner/create')
+    // },
+    // {
+    //   path: '/banner/:id/edit',
+    //   name: 'banner.edit',
+    //   component: ()=>import('~/pages/banner/edit')
+    // },
+    // {
+    //   path: '/settings',
+    //   component: ()=>import('~/pages/settings/index.vue'),
+    //   children: [
+    //     {
+    //       path: '',
+    //       redirect: {name: 'settings.profile'}
+    //     },
+    //     {
+    //       path: 'profile',
+    //       name: 'settings.profile',
+    //       component: ()=>import('~/pages/settings/profile.vue')
+    //     },
+    //     {
+    //       path: 'password',
+    //       name: 'settings.password',
+    //       component: ()=>import('~/pages/settings/password.vue')
+    //     }
+    //   ]
+    // }
   ]),
 
   // Guest routes.

@@ -1,6 +1,5 @@
 <?php
 namespace App\Services\Facades;
-use Illuminate\Http\Request;
 
 /**
  * Interface FBAInboundServiceMWS
@@ -15,7 +14,7 @@ interface  FBAInboundServiceMWS
 
     public function createInboundShipment($request);
 
-    public function createInboundShipmentPlan(Request $request);
+    public function createInboundShipmentPlan($request);
 
     public function estimateTransportRequest($request);
 

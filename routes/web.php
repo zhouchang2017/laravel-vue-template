@@ -12,10 +12,8 @@
 */
 
 Route::get('/test', 'TestController@index');
+Route::get('/test/xsd', 'TestController@xsd');
 Route::get('/products', 'TestController@products');
 Route::get('/products/match', 'TestController@byAsins');
 
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('{path}','index')->where('path', '^(?!api).*');
