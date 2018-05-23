@@ -26,10 +26,8 @@ class MwsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('Mws\Mws', function ($app) {
-
             $collection = new Collection();
-            $endpoint = 'https://mws.amazonservices.com';
-            return new Mws($collection, $endpoint);
+            return new Mws($collection);
         });
     }
 }

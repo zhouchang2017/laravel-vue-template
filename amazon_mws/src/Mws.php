@@ -38,12 +38,28 @@ class Mws extends Client
 
     private $config;
 
-    public function __construct(Collection $collection, $endpoint)
+    public function __construct(Collection $collection)
     {
         parent::__construct();
         $this->collection = $collection;
     }
 
+    public function orders()
+    {
+        $name = __FUNCTION__;
+        return $this->getApiInstance($name);
+    }
+
+    /**
+     * 获取请求api实例
+     * @param $name
+     * @return mixed
+     */
+    private function getApiInstance($name)
+    {
+        $moduleName = 'Mws\\Apis\\' . studly_case($name);
+        return new $moduleName();
+    }
 
     /**
      * 验证请求action是否存在

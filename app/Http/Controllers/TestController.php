@@ -81,7 +81,7 @@ EOD;
 
     public function xsd(Request $request)
     {
-        $response = Mws::driver('amazon:en')->ListMatchingProducts($request);
+        $response = Mws::orders()->listMatchingProducts($request);
         dd($response);
     }
 }
