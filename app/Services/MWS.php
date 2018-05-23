@@ -132,6 +132,7 @@ abstract class MWS implements ServiceMWSUrlFacade
         $headers['Content-Type'] = "application/x-www-form-urlencoded; charset=utf-8"; // We need to make sure to set utf-8 encoding here
         $headers['Expect'] = null; // Don't expect 100 Continue
         $headers['UserAgent'] = $this->userAgent;
+        dd($headers);
         $client = new Client;
         try {
             $response = $client->request('POST', $this->getServiceUrl(),[

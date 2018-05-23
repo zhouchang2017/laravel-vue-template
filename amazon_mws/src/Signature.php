@@ -2,70 +2,54 @@
 namespace Mws;
 use Exception;
 use Carbon\Carbon;
-use Psr\Http\Message\RequestInterface;
+use Mws\Traits\SignTrait;
 /**
  *
  */
 class Signature
 {
+    use SignTrait;
+    private $config;
     protected $defaults;
 
-    public function __construct()
+    private $provider = 'amazon';
+
+    public function __construct(array $keys = [])
     {
-        $this->defaults = [
-            'AWSAccessKeyId'   => env('AWS_ACCESS_KEY_ID', ''),
-            'MarketplaceId'    => env('MWS_MARKETPLACE_ID', ''),
-            'SellerId'         => env('MWS_SELLER_ID', ''),
-            'SignatureMethod'  => env('MWS_SIGNATURE_METHOD', ''),
-            'SignatureVersion' => env('MWS_SIGNATURE_VERSION', ''),
-            'Timestamp'        => Carbon::now()->toIso8601String(),
-        ];
+        $this->config = array_merge(config('amazon.faker_user_keys'),$keys);
     }
 
-    public function signer(RequestInterface $request)
-    {
-        $query = $request->getQuery();
-        $query->merge($this->defaults);
-        $newQuery = $query->toArray();
-
-        if (str_contains(strtolower($request->getPath()), 'orders')) {
-            $newQuery['MarketplaceId.Id.1'] = $newQuery['MarketplaceId'];
-            unset($newQuery['MarketplaceId']);
-        }
-
-        ksort($newQuery, SORT_NATURAL);
-        $query->replace($newQuery);
-
-        $canonicalizedString = implode("\n", [
-            $request->getMethod(),
-            $request->getHost(),
-            $request->getPath(),
-            (string) $request->getQuery()
-        ]);
-
-        $signature = base64_encode(hash_hmac(
-            'sha256',
-            $canonicalizedString,
-            env('MWS_SECRET_KEY'),
-            true
-        ));
-
-        $request->getQuery()->set('Signature', $signature);
-
-        return $request;
+    private function getMarketplaceId(){
+        $local = array_get($this->config,'local');
+        return config('amazon.marketPlaceId')[$local];
     }
 
-    /**
-     * Add an Mws Signature to a request
-     * not the best method, but takes care of everything
-     * @param  GuzzleHttp\Message\Request $request
-     * @return GuzzleHttp\Message\Request $request
-     */
-    public static function sign(Request $request)
+    private function getSignatureVersion(){
+        return '2';
+    }
+
+    private function getSignatureMethod()
+    {
+        return 'HmacSHA256';
+    }
+    public function signer(array $params,$serviceUrl)
+    {
+        $params['SellerId'] = array_get($this->config,'seller_id');
+//        $params['Merchant'] = config('amazon.merchant');
+        $params['MWSAuthToken'] = array_get($this->config,'auth_token');
+        $params['AWSAccessKeyId'] = array_get($this->config,'aws_access_key_id');
+        $params['Timestamp'] = Carbon::now()->toIso8601String();
+        $params['SignatureVersion'] = $this->getSignatureVersion();
+        $params['SignatureMethod'] = $this->getSignatureMethod();
+        $params['Signature'] = $this->signParameters($params, array_get($this->config,'aws_secret_access_key'),$serviceUrl);
+        return $params;
+    }
+
+
+
+    public static function sign(array $params,$serviceUrl)
     {
         $signature = new static;
-        $signature->signer($request);
-
-        return $request;
+        return $signature->signer($params,$serviceUrl);
     }
 }

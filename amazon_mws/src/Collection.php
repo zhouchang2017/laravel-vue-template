@@ -16,34 +16,31 @@ class Collection extends BaseCollection
         return parent::__construct($items);
     }
 
-    public function paths()
-    {
-        return new static($this->get('paths'));
-    }
 
-    public function versions()
+    private function versionCollect()
     {
         return new static($this->get('version'));
     }
 
-    public function version($path)
+    public function getVersion(string $action)
     {
-        return $this->versions()->get($path);
+        return $this->versionCollect()->get($this->getModule($action));
     }
 
-    public function path($action)
+    public function getModule(string $action)
     {
-        $action = studly_case($action);
+        return $this->actionCollect()->filter(function($item) use ($action){
+            return in_array(studly_case($action),$item);
+        })->keys()->first();
+    }
 
-        $path = $this->paths()->filter(function ($actions) use ($action) {
-            return in_array($action, $actions);
-        });
 
-        return $path->keys()->first();
+    private function actionCollect(){
+        return new static($this->get('actions'));
     }
 
     public function actions()
     {
-        return $this->paths()->flatten()->toArray();
+        return $this->actionCollect()->flatten()->toArray();
     }
 }

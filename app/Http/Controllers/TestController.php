@@ -23,11 +23,11 @@ class TestController extends Controller
      * @param FulfillmentInboundShipment $fba
      * @param Products $products
      */
-//    public function __construct(FulfillmentInboundShipment $fba, Products $products)
-//    {
+    public function __construct(Products $products)
+    {
 //        $this->fba = $fba;
-//        $this->products = $products;
-//    }
+        $this->products = $products;
+    }
 
     public function index(Request $request)
     {
@@ -79,9 +79,9 @@ EOD;
         return $this->products->GetMatchingProduct($request);
     }
 
-    public function xsd()
+    public function xsd(Request $request)
     {
-        $response = Mws::driver('amazon');
+        $response = Mws::driver('amazon:en')->ListMatchingProducts($request);
         dd($response);
     }
 }

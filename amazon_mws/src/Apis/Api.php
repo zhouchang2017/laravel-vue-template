@@ -6,7 +6,14 @@ use Mws\Collection;
 
 abstract class Api
 {
-	public function client($endpoint = 'https://mws.amazonservices.com')
+    protected $config;
+
+    public function __construct($config)
+    {
+        $this->config = $config;
+    }
+
+    public function client($endpoint = 'https://mws.amazonservices.com')
 	{
 		$collection = new Collection();
 

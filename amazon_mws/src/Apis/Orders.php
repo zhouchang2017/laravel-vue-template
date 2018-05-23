@@ -3,7 +3,7 @@ namespace Mws\Apis;
 
 use Carbon\Carbon;
 
-class Order extends Api
+class Orders extends Api
 {
 	protected $status = [
 		'PendingAvailability',

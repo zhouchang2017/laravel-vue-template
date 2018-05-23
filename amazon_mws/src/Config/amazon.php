@@ -1,71 +1,6 @@
 <?php
 
 return [
-    'faker_user_keys'=>[
-        'app_name'=>'test amazon mws by laravel',
-        'aws_access_key_id'=>env('AMAZON_AWS_ACCESS_KEY_ID', ''),
-        'aws_secret_access_key' => env('AMAZON_AWS_SECRET_ACCESS_KEY', ''),
-        'seller_id' =>env('AMAZON_AWS_SELLER_ID',''),
-        'auth_token'=>env('AMAZON_AWS_AUTH_TOKEN'),
-        'service_locale'=>env('AMAZON_AWS_SERVICE_LOCALE','us'),
-        'user_agent'=>'FBAInventoryServiceMWS PHP5 Library',
-    ],
-    'app_name'=>env('AMAZON_AWS_APP_NAME',env('APP_NAME')),
-    /**
-     * Your access key.
-     */
-    'aws_access_key_id' => env('AMAZON_AWS_ACCESS_KEY_ID', ''),
-    /**
-     * Your secret key.
-     */
-    'aws_secret_access_key' => env('AMAZON_AWS_SECRET_ACCESS_KEY', ''),
-    /**
-     * Your seller id.
-     */
-    'seller_id' =>env('AMAZON_AWS_SELLER_ID',''),
-
-    'merchant' =>env('AMAZON_AWS_MERCHANT'),
-
-    'auth_token'=>env('AMAZON_AWS_AUTH_TOKEN'),
-
-    'service_locale'=>env('AMAZON_AWS_SERVICE_LOCALE','us'),
-
-    'services_url'=>[
-        // 北美
-        'ca'=>'https://mws.amazonservices.ca',
-        'us'=>'https://mws.amazonservices.com',
-        // 欧洲
-        'de'=>'https://mws-eu.amazonservices.com',
-        'es'=>'https://mws-eu.amazonservices.com',
-        'fr'=>'https://mws-eu.amazonservices.com',
-        'in'=>'https://mws.amazonservices.in',
-        'it'=>'https://mws-eu.amazonservices.com',
-        'uk'=>'https://mws-eu.amazonservices.com',
-        // 远东
-        'js'=>'https://mws.amazonservices.jp',
-        // 中国
-        'cn'=>'https://mws.amazonservices.com.cn'
-    ],
-    'marketPlaceId'=>[
-        // 北美
-        'ca'=>'A2EUQ1WTGCTBG2',
-        'us'=>'ATVPDKIKX0DER',
-        // 欧洲
-        'de'=>'A1PA6795UKMFR9',
-        'es'=>'A1RKKUPIHCS9HS',
-        'fr'=>'A13V1IB3VIYZZH',
-        'in'=>'A21TJRUUN4KGV',
-        'it'=>'APJ6JRA9NG5V4',
-        'uk'=>'A1F83G8C2ARO7P',
-        // 远东
-        'js'=>'A1VC38T7YXB528',
-        // 中国
-        'cn'=>'AAHKV2X7AFYLW'
-    ],
-    'service_version'=>env('SERVICE_VERSION','2010-10-01'),
-
-    'user_agent'=>'FBAInventoryServiceMWS PHP5 Library',
-
     'mws' => [
         'enumerations' => [
             'feedStatus' => [
@@ -219,5 +154,5 @@ return [
                 'UpdateSubscription',
             ],
         ],
-    ]
+    ],
 ];
