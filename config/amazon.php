@@ -206,7 +206,10 @@ return [
                 'UpdateReportAcknowledgements',
 
             ],
-
+            'Sellers'=>[
+                'ListMarketplaceParticipations',
+                'ListMarketplaceParticipationsByNextToken'
+            ],
             'Subscriptions' => [
                 'RegisterDestination',
                 'DeregisterDestination',

@@ -27,7 +27,7 @@ class Feeds extends Api
      * _POST_SHIPPING_OVERRIDE_DATA_                        配送调整上传数据
      *
      **/
-    
+
     const VERSION = '2009-01-01';
 
     public function __construct(array $storeKeys)
