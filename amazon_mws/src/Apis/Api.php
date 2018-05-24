@@ -6,19 +6,79 @@ use Mws\Collection;
 
 abstract class Api
 {
-    protected $config;
+    public $params = [];
+    protected $storeKeys;
+    protected $moduleName;
 
-    public function __construct($config)
+
+    public function setModuleName($moduleName)
     {
-        $this->config = $config;
+        $this->moduleName = studly_case($moduleName);
+        return $this;
     }
 
-    public function client($endpoint = 'https://mws.amazonservices.com')
-	{
-		$collection = new Collection();
+    public function __construct(array $storeKeys)
+    {
+        $this->storeKeys = $storeKeys;
+        $this->setParamsSellerId($storeKeys['seller_id'])->setParamsAuthToken($storeKeys['auth_token']);
+    }
 
-        return new Mws($collection, $endpoint);
-	}
+    public function setParamsSellerId($sellerId)
+    {
+        $this->params['SellerId'] = $sellerId;
+        return $this;
+    }
+
+    public function setParamsAuthToken($authToken)
+    {
+        $this->params['MWSAuthToken'] = $authToken;
+    }
+
+    public function setAction(string $name)
+    {
+        $this->params = array_merge($this->params,[
+            'Action'=>studly_case($name)
+        ]);
+        return $this;
+    }
+
+
+    public function setParamsVersion(string $version)
+    {
+        $this->params['Version'] = $version;
+        return $this;
+    }
+
+    public function getVersion()
+    {
+        return $this->params['Version'];
+    }
+
+    public function getServiceUrl()
+    {
+        return config('amazon.services_url')[$this->getLocale()];
+    }
+
+    public function getRequestUri(): string
+    {
+        return $this->getServiceUrl() . '/' . $this->moduleName . '/' . $this->getVersion();
+    }
+
+
+    public function getLocale(){
+        return array_get($this->storeKeys, 'service_locale');
+    }
+
+    private function getMarketplaceId()
+    {
+        return config('amazon.marketPlaceId')[$this->getLocale()];
+    }
+
+    public function setParamsMarketplaceId()
+    {
+        $this->params['MarketplaceId'] = $this->getMarketplaceId();
+        return $this;
+    }
 
 	protected function cleanQuery(array $query, array $allowed)
 	{

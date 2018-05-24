@@ -2,13 +2,13 @@
 
 return [
     'faker_user_keys'=>[
-        'app_name'=>'test amazon mws by laravel',
-        'aws_access_key_id'=>env('AMAZON_AWS_ACCESS_KEY_ID', ''),
-        'aws_secret_access_key' => env('AMAZON_AWS_SECRET_ACCESS_KEY', ''),
-        'seller_id' =>env('AMAZON_AWS_SELLER_ID',''),
-        'auth_token'=>env('AMAZON_AWS_AUTH_TOKEN'),
-        'service_locale'=>env('AMAZON_AWS_SERVICE_LOCALE','us'),
-        'user_agent'=>'FBAInventoryServiceMWS PHP5 Library',
+        'shop1'=>[
+            'app_name'=>'test amazon mws by laravel',
+            'seller_id' =>env('AMAZON_AWS_SELLER_ID',''),
+            'auth_token'=>env('AMAZON_AWS_AUTH_TOKEN'),
+            'service_locale'=>env('AMAZON_AWS_SERVICE_LOCALE','us'),
+            'user_agent'=>'FBAInventoryServiceMWS PHP5 Library',
+        ]
     ],
     'app_name'=>env('AMAZON_AWS_APP_NAME',env('APP_NAME')),
     /**

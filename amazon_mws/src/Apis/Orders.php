@@ -5,6 +5,8 @@ use Carbon\Carbon;
 
 class Orders extends Api
 {
+    const VERSION = '2013-09-01';
+
 	protected $status = [
 		'PendingAvailability',
 		'Pending',
@@ -29,7 +31,11 @@ class Orders extends Api
 		'TFMShipmentStatus',
 	];
 
-	public function listOrders($query = []) 
+	public function __construct()
+    {
+    }
+
+    public function listOrders($query = [])
 	{
 		if (empty($options)) {
 			$query['CreatedAfter'] = Carbon::now()->subMonth();

@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: z
- * Date: 2018/5/23
- * Time: 上午10:48
- */
 
 namespace Mws\Apis;
 
 
-class Upload extends Api
+class Feeds extends Api
 {
     /*
      * 上传数据类型
@@ -33,4 +27,17 @@ class Upload extends Api
      * _POST_SHIPPING_OVERRIDE_DATA_                        配送调整上传数据
      *
      **/
+    
+    const VERSION = '2009-01-01';
+
+    public function __construct(array $storeKeys)
+    {
+        parent::__construct($storeKeys);
+        $this->setParamsVersion(self::VERSION)->setParamsMarketplaceId();
+    }
+
+    public function submitFeed()
+    {
+
+    }
 }

@@ -81,7 +81,7 @@ EOD;
 
     public function xsd(Request $request)
     {
-        $response = Mws::orders()->listMatchingProducts($request);
+        $response = Mws::store('shop1')->listMatchingProducts($request);
         dd($response);
     }
 }

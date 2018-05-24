@@ -44,7 +44,7 @@ trait UserAgentHeaderTrait
         $userAgent .= '; ';
         $userAgent .= 'Platform=' . php_uname('s') . '/' . php_uname('m') . '/' . php_uname('r');
         $userAgent .= '; ';
-        $userAgent .= 'MWSClientVersion=' . $this->clientVersion;
+        $userAgent .= 'MWSClientVersion=' . self::CLIENT_VERSION;
 
         foreach ($attributes as $key => $value) {
             if (empty($value)) {

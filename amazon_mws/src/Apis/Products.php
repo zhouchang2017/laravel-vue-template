@@ -7,25 +7,19 @@ use Illuminate\Http\Request;
 
 class Products extends Api
 {
-    private $marketPlaceId;
+    const VERSION = '2011-10-01';
 
-    public function __construct($config = [])
+    public function __construct(array $storeKeys)
     {
-        parent::__construct($config);
-        $this->marketPlaceId = $this->getMarketplaceId();
-    }
-
-    private function getMarketplaceId()
-    {
-        $local = array_get($this->config, 'service_locale');
-        return config('amazon.marketPlaceId')[$local];
+        parent::__construct($storeKeys);
+        $this->setParamsVersion(self::VERSION)->setParamsMarketplaceId();
     }
 
     public function listMatchingProducts(Request $request)
     {
-        return [
-            'MarketplaceId' => $this->marketPlaceId,
-            'Query'         => $request->input('query', ''),
-        ];
+        $this->params =  array_merge($this->params, [
+            'Query' => $request->input('query', '')
+        ]);
+        return $this;
     }
 }
