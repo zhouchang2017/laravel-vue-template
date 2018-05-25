@@ -1,6 +1,5 @@
 export default ({authGuard, guestGuard}) => [
   {path: '/', name: 'welcome', component: ()=>import('~/pages/welcome.vue')},
-
   // Authenticated routes.
   ...authGuard([
     // {
