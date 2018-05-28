@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.6.21 on 2018-05-21 10:24:28.
+ * Generated for Laravel 5.6.21 on 2018-05-28 07:38:24.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -12452,6 +12452,127 @@ namespace Illuminate\Support\Facades {
  
 }
 
+namespace Mws\Support { 
+
+    class MwsFacade {
+        
+        /**
+         * 验证请求action是否存在
+         *
+         * @param string $action
+         * @return bool 
+         * @static 
+         */ 
+        public static function actionIsValid($action)
+        {
+            return \Mws\Mws::actionIsValid($action);
+        }
+        
+        /**
+         * 设置请求头
+         *
+         * @static 
+         */ 
+        public static function setHeader()
+        {
+            return \Mws\Mws::setHeader();
+        }
+        
+        /**
+         * 
+         *
+         * @param $xml
+         * @return mixed 
+         * @static 
+         */ 
+        public static function xmlToArray($xml)
+        {
+            return \Mws\Mws::xmlToArray($xml);
+        }
+        
+        /**
+         * 启动MWS服务，设置店铺信息
+         *
+         * @param string|null $storeName
+         * @param array $keys
+         * @return $this 
+         * @throws Exception
+         * @static 
+         */ 
+        public static function store($storeName = null, $keys = array())
+        {
+            return \Mws\Mws::store($storeName, $keys);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function sendAsync($request, $options = array())
+        {
+            //Method inherited from \GuzzleHttp\Client            
+            return \Mws\Mws::sendAsync($request, $options);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function send($request, $options = array())
+        {
+            //Method inherited from \GuzzleHttp\Client            
+            return \Mws\Mws::send($request, $options);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function requestAsync($method, $uri = '', $options = array())
+        {
+            //Method inherited from \GuzzleHttp\Client            
+            return \Mws\Mws::requestAsync($method, $uri, $options);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function request($method, $uri = '', $options = array())
+        {
+            //Method inherited from \GuzzleHttp\Client            
+            return \Mws\Mws::request($method, $uri, $options);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getConfig($option = null)
+        {
+            //Method inherited from \GuzzleHttp\Client            
+            return \Mws\Mws::getConfig($option);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getUserAgentHeader($applicationName, $applicationVersion, $attributes = null)
+        {
+            return \Mws\Mws::getUserAgentHeader($applicationName, $applicationVersion, $attributes);
+        }
+         
+    }
+ 
+}
+
 
 namespace  { 
 
@@ -14740,6 +14861,8 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
 
     class View extends \Illuminate\Support\Facades\View {}
+
+    class Mws extends \Mws\Support\MwsFacade {}
  
 }
 

@@ -15,6 +15,10 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name')->comment('产品名称,生成listing的名称');
+            $table->string('name_cn')->comment('中文配货名称');
+            $table->string('name_en')->comment('英文配货名称');
+            $table->boolean('enabled')->comment('可销售的');
             $table->timestamps();
         });
     }

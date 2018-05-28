@@ -18,6 +18,7 @@ class TestController extends Controller
     protected $products;
 
 
+
     /**
      * TestController constructor.
      * @param FulfillmentInboundShipment $fba
@@ -81,8 +82,29 @@ EOD;
 
     public function xsd(Request $request)
     {
-        $response = Mws::store('shop1')->getReport($request);
-        dd($response);
+//        $response = Mws::store('shop1')->getReport($request);
+//        dd($response);
+        $this->download("amzn-envelope.xsd");
+    }
 
+    public function download($schema)
+    {
+        foreach([ "https://images-na.ssl-images-amazon.com/images/G/01/rainier/help/xsd/release_4_1/", "https://images-na.ssl-images-amazon.com/images/G/01/rainier/help/xsd/release_1_9/" ] as $ns)
+        {
+            $source = @simplexml_load_file($ns.$schema);
+
+            if($source)
+            {
+                $source->registerXPathNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
+
+                foreach($source->xpath("//xsd:include") as $include)
+                    $this->download($include->attributes()->schemaLocation);
+
+                file_put_contents(base_path('amazon_mws/src/Xsd/').$schema, $source->asXML());
+                return true;
+            }
+        }
+
+        return false;
     }
 }
