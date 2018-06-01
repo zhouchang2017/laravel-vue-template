@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductOptionValuesTable extends Migration
+class ProductTypeAttributeGroupTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateProductOptionValuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_option_values', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+        Schema::create('product_type_attribute_group', function (Blueprint $table) {
+            $table->unsignedInteger('product_id');
+            $table->unsignedInteger('product_group_id');
         });
     }
 
@@ -26,6 +26,6 @@ class CreateProductOptionValuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_option_values');
+        Schema::dropIfExists('product_type_attribute_group');
     }
 }

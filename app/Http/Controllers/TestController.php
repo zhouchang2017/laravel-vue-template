@@ -7,6 +7,7 @@ use App\Services\DataType\CreateInboundShipmentPlanRequest;
 use App\Services\DataType\GetServiceStatusRequest;
 use App\Services\FulfillmentInboundShipment;
 use App\Services\Products;
+use xsd2php\Xsd2Php;
 use Illuminate\Http\Request;
 use GuzzleHttp\Psr7\Request as HttpRequest;
 use Mws;
@@ -82,9 +83,12 @@ EOD;
 
     public function xsd(Request $request)
     {
+        $filePath = base_path('amazon_mws/src/Xsd/').'Product.xsd';
+        $xsdClass = new Xsd2Php($filePath);
+        $xsdClass->saveClasses(base_path('amazon_mws/src/XsdClass'));
 //        $response = Mws::store('shop1')->getReport($request);
 //        dd($response);
-        $this->download("amzn-envelope.xsd");
+        //$this->download("amzn-envelope.xsd");
     }
 
     public function download($schema)

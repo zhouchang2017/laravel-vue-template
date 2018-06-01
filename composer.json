@@ -27,7 +27,8 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "Mws\\": "amazon_mws/src"
+            "Mws\\": "amazon_mws/src",
+            "xsd2php\\":"xsd_to_php/src"
         }
     },
     "autoload-dev": {

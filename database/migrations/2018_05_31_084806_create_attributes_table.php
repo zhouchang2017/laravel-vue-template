@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Kalnoy\Nestedset\NestedSet;
 
-class CreateCategoriesTable extends Migration
+class CreateAttributesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +13,10 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('attributes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->comment('分类名称');
-            $table->json('config')->nullable(); // {icon:'',avatar:'',desc:''}
-            NestedSet::columns($table);
+            $table->integer('group_id')->unsigned();
+            $table->string('value')->comment('属性值');
             $table->timestamps();
         });
     }
@@ -30,6 +28,9 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::table('attributes', function (Blueprint $table) {
+            $table->dropForeign(['group_id']);
+        });
+        Schema::dropIfExists('attributes');
     }
 }

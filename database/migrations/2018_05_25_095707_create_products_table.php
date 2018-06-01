@@ -19,6 +19,8 @@ class CreateProductsTable extends Migration
             $table->string('name_cn')->comment('中文配货名称');
             $table->string('name_en')->comment('英文配货名称');
             $table->boolean('enabled')->comment('可销售的');
+            $table->unsignedInteger('product_type_id');
+            $table->text('body')->nullable()->comment('产品描述');
             $table->timestamps();
         });
     }
