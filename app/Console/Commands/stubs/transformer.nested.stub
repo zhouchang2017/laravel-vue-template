@@ -1,0 +1,15 @@
+<?php
+
+namespace DummyNamespace;
+
+class DummyClass extends Transformer
+{
+    protected $availableIncludes = [  ];
+
+    public function __construct($field = null)
+    {
+        parent::__construct($field);
+    }
+
+
+}

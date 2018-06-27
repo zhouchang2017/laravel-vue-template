@@ -1,0 +1,11 @@
+{
+    "name": "z/amazon_mws",
+    "description": "amazon mws by laravel",
+    "authors": [
+        {
+            "name": "zhouchang",
+            "email": "290621352@qq.com"
+        }
+    ],
+    "require": {}
+}
