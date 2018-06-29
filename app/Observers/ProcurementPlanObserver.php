@@ -55,22 +55,8 @@ class ProcurementPlanObserver
     {
         // todo 检测是否已存在对应的采购单！！
         if (in_array($plan->status, [ 'already', 5, '5' ])) {
-            $plan->procurement()->create($this->calcTotalPriceOrPcs($plan));
+            $plan->procurement()->create();
         }
     }
 
-    /**
-     * 计算采购单总价格和总数量
-     * @param ProcurementPlan $plan
-     * @return mixed
-     */
-    private function calcTotalPriceOrPcs(ProcurementPlan $plan)
-    {
-        return $plan->variants->reduce(function ($calc, $variant) {
-            $calc['total_price'] += $variant->plan_info->getTotalPrice();
-            $calc['total_pcs'] += $variant->plan_info->pcs;
-            $calc['able_price'] = $calc['total_price'];
-            return $calc;
-        }, [ 'total_price' => 0, 'total_pcs' => 0, 'able_price' => 0 ]);
-    }
 }

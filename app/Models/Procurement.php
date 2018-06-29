@@ -4,9 +4,18 @@ namespace App\Models;
 
 
 use App\Observers\ProcurementObserver;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Class Procurement
+ * @package App\Models
+ */
 class Procurement extends Model
 {
+    use SoftDeletes;
+    /**
+     * @var array
+     */
     protected $procurement_status = [
         'part_finished', // 未全部到货
         'pending', // 等待发货
@@ -15,6 +24,9 @@ class Procurement extends Model
         'cancel'// 作废
     ];
 
+    /**
+     * @var array
+     */
     protected $payment_status = [
         'unpaid',// 未支付
         'paid',// 以支付
@@ -22,6 +34,9 @@ class Procurement extends Model
         'cancel',// 以取消支付
     ];
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'procurement_status',//采购状态
         'total_pcs',//总计件数
@@ -34,6 +49,9 @@ class Procurement extends Model
         'shipment',//物流
     ];
 
+    /**
+     * @var array
+     */
     protected $casts = [
         'shipment' => 'array',
     ];
@@ -49,12 +67,29 @@ class Procurement extends Model
         self::observe(ProcurementObserver::class);
     }
 
+    /**
+     * 对应的采购计划
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function plan()
     {
         return $this->belongsTo(ProcurementPlan::class, 'procurement_plan_id');
     }
 
-    public function calcTotalPriceOrPcs()
+    /**
+     * 所有产品变体
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function planInfo()
+    {
+        return $this->hasMany(ProcurementPlanProductVariant::class,'procurement_plan_id','procurement_plan_id');
+    }
+
+    /**
+     * 计算采购单总价格和总数量
+     * @return array
+     */
+    public function calcTotalPriceOrPcs() :array
     {
         return $this->plan->variants->reduce(function ($calc, $variant) {
             $calc['total_price'] += $variant->plan_info->getTotalPrice();
@@ -62,5 +97,14 @@ class Procurement extends Model
             $calc['able_price'] = $calc['total_price'];
             return $calc;
         }, [ 'total_price' => 0, 'total_pcs' => 0, 'able_price' => 0 ]);
+    }
+
+    /**
+     * 更新采购总价格和总数量
+     * @return $this
+     */
+    public function updateTotalPriceOrPcs()
+    {
+        return $this->store($this->calcTotalPriceOrPcs());
     }
 }

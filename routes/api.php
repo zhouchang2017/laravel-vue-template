@@ -18,6 +18,7 @@ $api->version('v1', [
     $api->resource('warehouses','WarehouseController');
     $api->resource('procurement_plans','ProcurementPlanController');
     $api->resource('procurements','ProcurementController');
+    $api->resource('manuallies','ManuallyController');
 
     // 关联更新
     $api->put('product-types/{id}/attributes','ProductTypeController@attributes');
@@ -31,6 +32,10 @@ $api->version('v1', [
     $api->post('product_providers/{id}/products','ProductProviderController@products');
     // 仓库更新或创建地址
     $api->post('warehouses/{id}/address','WarehouseController@address');
+    // 获取关联的手动入仓列表
+    $api->get('warehouses/{id}/manuallise','WarehouseController@manuallise');
+    // 获取关联的采购单列表
+    $api->get('warehouses/{id}/procurements','WarehouseController@procurements');
     // 审核采购计划
     $api->put('procurement_plans/{id}/approval','ProcurementPlanController@approval');
 

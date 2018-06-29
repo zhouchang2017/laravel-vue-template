@@ -34,4 +34,31 @@ class UpdateProcurementRequest extends FormRequest
         ];
     }
 
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->quantityDetection()) {
+                $validator->errors()->add('field', '已收到货品数量|良品数量|不良品数量|丢失数量 不合法!');
+            }
+        });
+    }
+
+    /**
+     * 数量检测
+     * @return bool
+     */
+    private function quantityDetection(): bool
+    {
+        if ( !request()->has('plan_info')) {
+            return true;
+        }
+        return !collect($this->plan_info)->every(function ($info) {
+            $arrivedPcs = $info['arrived_pcs'];
+            $pcs = $info['pcs'];
+            $total = $info['good'] + $info['bad'];
+            $totalWithLost = $total + $info['lost'];
+            return ($arrivedPcs <= $pcs) && ($arrivedPcs == $total) && ($totalWithLost <= $pcs);
+        });
+    }
+
 }

@@ -11,7 +11,8 @@ class ProcurementObserver
 
     public function creating(Procurement $procurement)
     {
-        $this->changePaymentStatus($procurement);
+        $procurement->willStore($procurement->calcTotalPriceOrPcs());
+        $this->testChangePaymentStatus($procurement);
     }
 
     public function created(Procurement $procurement)
@@ -21,7 +22,8 @@ class ProcurementObserver
 
     public function updating(Procurement $procurement)
     {
-        $this->changePaymentStatus($procurement);
+        $this->testChangePaymentStatus($procurement);
+        $this->testChangStatusToSending($procurement);
     }
 
     public function updated(Procurement $procurement)
@@ -36,6 +38,16 @@ class ProcurementObserver
         $this->updateProcurementPlanProductVariant($procurement);
     }
 
+    public function saving(Procurement $procurement)
+    {
+
+    }
+
+    public function saved(Procurement $procurement)
+    {
+
+    }
+
     public function deleted(Procurement $procurement)
     {
 
@@ -47,6 +59,9 @@ class ProcurementObserver
             collect(request('plan_info'))->each(function ($info) {
                 ProcurementPlanProductVariant::findOrFail($info['id'])->update($info);
             });
+            $procurement->updateTotalPriceOrPcs();
+            // 是否需要更新状态
+            $this->testChangeProcurementStatus($procurement)->save();
         }
     }
 
@@ -54,7 +69,7 @@ class ProcurementObserver
      * 改变支付状态
      * @param Procurement $procurement
      */
-    private function changePaymentStatus(Procurement $procurement)
+    private function testChangePaymentStatus(Procurement $procurement)
     {
 //        'unpaid',// 未支付
 //        'paid',// 以支付
@@ -74,6 +89,36 @@ class ProcurementObserver
             case ($difference === 0):
                 $procurement->setAttribute('payment_status', 'paid');
         }
+    }
+
+    private function testChangStatusToSending(Procurement $procurement)
+    {
+        $original = json_decode($procurement->getOriginal('shipment'), true);
+        $shipment = $procurement->getAttribute('shipment');
+        if ($original !== $shipment && $procurement->procurement_status === 'pending') {
+            $procurement->setAttribute('procurement_status', 'sending');
+        }
+    }
+
+    private function testChangeProcurementStatus(Procurement $procurement)
+    {
+        $result = $procurement->planInfo->reduce(function ($result, $planInfo) {
+            $result[] = $planInfo->getProcurementStatus();
+            return $result;
+        }, []);
+
+        if (in_array('part_finished', $result)) {
+            $procurement->setAttribute('procurement_status', 'part_finished');
+        }
+
+        if ( !in_array('part_finished', $result) && !in_array('sending', $result)) {
+            $procurement->setAttribute('procurement_status', 'finished');
+        }
+
+        if ( !in_array('part_finished', $result) && !in_array('finished', $result)) {
+            $procurement->setAttribute('procurement_status', 'sending');
+        }
+        return $procurement;
     }
 
 }

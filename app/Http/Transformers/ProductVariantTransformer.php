@@ -6,7 +6,7 @@ use App\Models\ProductVariant;
 
 class ProductVariantTransformer extends Transformer
 {
-    protected $availableIncludes = [ 'attributes', 'info', 'providers','plan_info' ];
+    protected $availableIncludes = [ 'attributes', 'info','product', 'providers', 'plan_info', 'manually_info','name' ];
 
     public function __construct($field = null)
     {
@@ -30,6 +30,16 @@ class ProductVariantTransformer extends Transformer
         return $this->item($variant->info, new ProductVariantInfoTransformer());
     }
 
+    public function includeProduct(ProductVariant $variant)
+    {
+        return $this->item($variant->product, new ProductTransformer());
+    }
+
+    public function includeName(ProductVariant $variant)
+    {
+        return $this->primitive($variant->product->name);
+    }
+
     public function includeProviders(ProductVariant $variant)
     {
         return $this->collection($variant->providers, new ProductProviderTransformer());
@@ -37,7 +47,12 @@ class ProductVariantTransformer extends Transformer
 
     public function includePlanInfo(ProductVariant $variant)
     {
-        return $this->item($variant->plan_info,new ProcurementPlanProductVariantTransformer());
+        return $this->item($variant->plan_info, new ProcurementPlanProductVariantTransformer());
+    }
+
+    public function includeManuallyInfo(ProductVariant $variant)
+    {
+        return $this->item($variant->manually_info, new ManuallyProductVariantTransformer());
     }
 
 }
