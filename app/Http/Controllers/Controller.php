@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contracts\ModelContract;
+use App\Models\Model;
 use App\Traits\QueryTrait;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,8 +14,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class Controller extends BaseController
-{
+class Controller extends BaseController {
     use Helpers, AuthorizesRequests, DispatchesJobs, ValidatesRequests, QueryTrait;
 
 
@@ -27,7 +27,7 @@ class Controller extends BaseController
      * @param $model
      * @param $transformer
      */
-    public function __construct($model, $transformer)
+    public function __construct(Model $model, $transformer)
     {
         $this->model = $model;
         $this->transformer = $transformer;
@@ -41,8 +41,8 @@ class Controller extends BaseController
     private function mergeFormRequest()
     {
         $this->formRequest = array_merge(
-            [ 'store'  => Request::class,
-              'update' => Request::class ], $this->formRequest
+            ['store' => Request::class,
+                'update' => Request::class], $this->formRequest
         );
     }
 
@@ -54,6 +54,16 @@ class Controller extends BaseController
     public function setModel(ModelContract $model)
     {
         $this->model = $model;
+        return $this;
+    }
+
+    /**
+     * @param $id
+     * @return $this
+     */
+    public function setModelBy($id)
+    {
+        $this->model = $this->model->findOrFail($id);
         return $this;
     }
 
@@ -178,7 +188,8 @@ class Controller extends BaseController
     public function update($id)
     {
         $request = $this->getRequest(__FUNCTION__);
-        $this->setModel($this->model::findOrFail($id)->store($request->all()));
+        $this->setModelBy($id);
+        $this->model->update($request->all());
         $this->registerEvent('afterUpdated');
 //        return $this->response->item($this->model, new $this->transformer())->setStatusCode(201);
         return $this->response->noContent();

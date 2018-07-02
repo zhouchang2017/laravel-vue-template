@@ -3,10 +3,41 @@
 namespace App\Traits;
 
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Exception;
 
-trait ModelTrait
-{
+trait ModelTrait {
+    protected $fieldSearchable = [];
+
+    /**
+     * @param array $attributes
+     * @param array $options
+     * @return bool
+     * @throws Exception
+     */
+    public function update(array $attributes = [], array $options = [])
+    {
+        if ($this instanceof Model) {
+            if ($this->fireModelEvent('willUpdate') === false) {
+                return false;
+            }
+            $update = parent::update($attributes, $options);
+            if ($this->fireModelEvent('didUpdate') === false) {
+                return false;
+            }
+            return $update;
+        } else {
+            throw new Exception('ModelTrait only use in model.');
+        }
+
+    }
+
+    public static function getFieldsSearchable()
+    {
+        return (new static)->fieldSearchable;
+    }
+
     public static function filterKeys(array $attributes)
     {
         return array_only($attributes, (new static())->getFillable());
@@ -39,7 +70,7 @@ trait ModelTrait
             return array_key_exists($key, $value) && !is_null($value[$key]);
         });
         return $attributes->mapWithKeys(function ($item) use ($key) {
-            return [ $item[$key] => $item ];
+            return [$item[$key] => $item];
         });
     }
 

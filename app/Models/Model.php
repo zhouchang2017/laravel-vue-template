@@ -17,10 +17,11 @@ class Model extends BaseModel implements ModelContract
 {
     use ModelTrait;
 
-    protected $fieldSearchable = [];
+    protected $observables = [
+        'willUpdate',
+        'didUpdate',
+    ];
 
-    public static function getFieldsSearchable()
-    {
-        return (new static)->fieldSearchable;
-    }
+
+
 }

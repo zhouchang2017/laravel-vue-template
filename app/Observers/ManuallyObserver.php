@@ -15,6 +15,17 @@ class ManuallyObserver
         $this->syncProductVariants($manually);
     }
 
+    public function willUpdate(Manually $manually)
+    {
+        dump('Manually willUpdate');
+    }
+
+    public function didUpdate(Manually $manually)
+    {
+        dump($manually);
+        dd('Manually didUpdate');
+    }
+
     public function updated(Manually $manually)
     {
 
