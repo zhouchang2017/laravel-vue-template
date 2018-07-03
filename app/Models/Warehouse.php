@@ -34,4 +34,9 @@ class Warehouse extends Model
             $query->whereStatus(request('procurement:status'));
         });
     }
+
+    public function storage()
+    {
+        return $this->hasMany(Storage::class);
+    }
 }

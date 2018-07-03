@@ -16,6 +16,7 @@ class CreateManuallyProductVariantTable extends Migration
         Schema::create('manually_product_variant', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('manually_id');
+            $table->unsignedInteger('product_id');
             $table->unsignedInteger('product_variant_id');
             $table->integer('price')->unsigned()->default(0)->comment('采购单价');
             $table->integer('pcs')->unsigned()->default(0)->comment('采购数量');

@@ -88,7 +88,7 @@ class ProcurementPlan extends Model
         return $this->belongsToMany(ProductVariant::class)->using(ProcurementPlanProductVariant::class)
             ->as('plan_info')
             ->withPivot(
-            'id','price','pcs','arrived_pcs','offer_price','product_provider_id','user_id','good','bad','lost'
+            'id','price','pcs','arrived_pcs','offer_price','product_id','product_provider_id','user_id','good','bad','lost'
             )
             ->withTimestamps();
     }

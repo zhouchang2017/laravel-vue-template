@@ -16,6 +16,7 @@ class CreateProcurementPlanProductVariantTable extends Migration
         Schema::create('procurement_plan_product_variant', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('procurement_plan_id');
+            $table->unsignedInteger('product_id');
             $table->unsignedInteger('product_variant_id');
             $table->integer('price')->unsigned()->default(0)->comment('采购单价');
             $table->integer('pcs')->unsigned()->default(0)->comment('采购数量');

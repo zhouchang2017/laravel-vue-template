@@ -30,6 +30,11 @@ class ManuallyProductVariant extends Pivot implements ModelContract
         return $this->belongsTo(Manually::class, 'manually_id');
     }
 
+    public function history()
+    {
+        return $this->morphMany(StorageHistory::class,'origin');
+    }
+
     public function getTotalPrice(): int
     {
         return (int)$this->price * (int)$this->pcs;

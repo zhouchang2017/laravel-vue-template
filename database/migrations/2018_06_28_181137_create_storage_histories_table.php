@@ -17,6 +17,10 @@ class CreateStorageHistoriesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('warehouse_id')->comment('仓库id');
             $table->morphs('origin');
+            $table->unsignedInteger('product_id')->comment('产品id');
+            $table->unsignedInteger('product_variant_id')->comment('变体id');
+            $table->integer('good')->default(0)->comment('入库良品数量');
+            $table->integer('bad')->default(0)->comment('入库不良品数量');
             $table->timestamps();
         });
     }

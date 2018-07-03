@@ -3,19 +3,19 @@
 namespace App\Models;
 
 use App\Observers\ManuallyObserver;
+use App\Services\Warehouse\Contract\AddStorageContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Manually extends Model
-{
+class Manually extends Model {
     use SoftDeletes;
 
-    protected $fillable = ['user_id','warehouse_id','description','status'];
+    protected $fillable = ['user_id', 'warehouse_id', 'description', 'status'];
 
     protected $casts = [
-        'history'=>'array'
+        'history' => 'array',
     ];
 
-    protected $status = ['uncommitted','pending','finished','cancel'];
+    protected $status = ['uncommitted', 'pending', 'finished', 'cancel'];
 
     /**
      * 数据模型的启动方法
@@ -27,6 +27,14 @@ class Manually extends Model
         parent::boot();
         self::observe(ManuallyObserver::class);
     }
+
+    public function scopeOfStatus($query, $status = null)
+    {
+        return $query->when($status, function ($query) use ($status) {
+            return $query->where('status', $status);
+        });
+    }
+
     /**
      * 手动入库指定仓库
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -54,7 +62,7 @@ class Manually extends Model
         return $this->belongsToMany(ProductVariant::class)->using(ManuallyProductVariant::class)
             ->as('manually_info')
             ->withPivot(
-                'id','price','pcs','offer_price','product_provider_id','user_id','good','bad'
+                'id', 'price', 'pcs', 'offer_price', 'product_id', 'product_provider_id', 'user_id', 'good', 'bad'
             )
             ->withTimestamps();
     }
@@ -63,4 +71,5 @@ class Manually extends Model
     {
         return $this->hasMany(ManuallyProductVariant::class);
     }
+
 }
