@@ -11,6 +11,8 @@ use App\Http\Transformers\ProcurementTransformer;
 use App\Models\Procurement;
 use App\Models\ProcurementPlan;
 use App\Http\Controllers\Controller;
+use App\Services\Procurement\ProcurementService;
+use Illuminate\Http\Request;
 
 class ProcurementController extends Controller
 {
@@ -26,6 +28,12 @@ class ProcurementController extends Controller
     public function store()
     {
         //
+    }
+
+    public function addStorage($id, Request $request, ProcurementService $service)
+    {
+        $service->find($id)->put($request->all());
+        return $this->response->created();
     }
 
 

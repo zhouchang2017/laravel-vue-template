@@ -23,6 +23,7 @@ class ManuallyController extends Controller
 
     public function addStorage($id,Request $request,ManuallyService $service)
     {
-        dd($service->find($id)->put($request->all()));
+        $service->find($id)->put($request->all());
+        return $this->response->created();
     }
 }

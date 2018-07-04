@@ -64,5 +64,10 @@ class ProductVariant extends Model
         return $info;
     }
 
+    public function planInfo()
+    {
+        return $this->hasMany(ProcurementPlanProductVariant::class);
+    }
+
 
 }

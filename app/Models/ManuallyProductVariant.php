@@ -6,10 +6,17 @@ use App\Models\Contracts\ModelContract;
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
+/**
+ * Class ManuallyProductVariant
+ * @package App\Models
+ */
 class ManuallyProductVariant extends Pivot implements ModelContract
 {
     use ModelTrait;
 
+    /**
+     * @var string
+     */
     protected $table = 'manually_product_variant';
 
     /**
@@ -30,11 +37,17 @@ class ManuallyProductVariant extends Pivot implements ModelContract
         return $this->belongsTo(Manually::class, 'manually_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function history()
     {
         return $this->morphMany(StorageHistory::class,'origin');
     }
 
+    /**
+     * @return int
+     */
     public function getTotalPrice(): int
     {
         return (int)$this->price * (int)$this->pcs;

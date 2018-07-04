@@ -3,10 +3,11 @@
 namespace App\Http\Transformers;
 
 use App\Models\ProcurementPlan;
+use App\Models\ProcurementPlanProductVariant;
 
 class ProcurementPlanTransformer extends Transformer
 {
-    protected $availableIncludes = [ 'variants' ];
+    protected $availableIncludes = [ 'variants','plan_info' ];
 
     public function __construct($field = null)
     {
@@ -27,6 +28,11 @@ class ProcurementPlanTransformer extends Transformer
     public function includeVariants(ProcurementPlan $plan)
     {
         return $this->collection($plan->variants,new ProductVariantTransformer());
+    }
+
+    public function includePlanInfo(ProcurementPlan $plan)
+    {
+        return $this->collection($plan->planInfo,new ProcurementPlanProductVariantTransformer());
     }
 
 

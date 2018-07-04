@@ -47,7 +47,7 @@ class ProductVariantTransformer extends Transformer
 
     public function includePlanInfo(ProductVariant $variant)
     {
-        return $this->item($variant->plan_info, new ProcurementPlanProductVariantTransformer());
+        return $this->collection($variant->planInfo, new ProcurementPlanProductVariantTransformer());
     }
 
     public function includeManuallyInfo(ProductVariant $variant)

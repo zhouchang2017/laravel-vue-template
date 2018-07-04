@@ -29,14 +29,11 @@ class WarehouseService {
         $this->provider = $provider;
     }
 
-    /*
-     * 功能
-     * */
 
     // 入库
-    public function add()
+    public function add($data)
     {
-        dd($this->provider->put());
+        $this->provider->put($data);
     }
 
     
@@ -55,7 +52,7 @@ class WarehouseService {
 
 
     // 出库
-    public function put()
+    public function pop()
     {
         
     }
@@ -72,9 +69,4 @@ class WarehouseService {
         return $instance;
     }
 
-    public static function __callStatic($name, $arguments)
-    {
-        dump($name);
-        dd($arguments);
-    }
 }

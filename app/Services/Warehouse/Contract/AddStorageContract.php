@@ -17,7 +17,6 @@ namespace App\Services\Warehouse\Contract;
 interface AddStorageContract {
 
     // 入仓
-    // 入仓单具备仓库id
     public function put($attribute = []);
 
 }

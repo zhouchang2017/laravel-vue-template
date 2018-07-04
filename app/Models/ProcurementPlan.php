@@ -97,4 +97,9 @@ class ProcurementPlan extends Model
     {
         return $this->hasOne(Procurement::class);
     }
+
+    public function planInfo()
+    {
+        return $this->hasMany(ProcurementPlanProductVariant::class);
+    }
 }

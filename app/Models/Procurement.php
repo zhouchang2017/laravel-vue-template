@@ -85,6 +85,16 @@ class Procurement extends Model
         return $this->hasMany(ProcurementPlanProductVariant::class,'procurement_plan_id','procurement_plan_id');
     }
 
+    public function getWarehouseAttribute()
+    {
+        return $this->plan->warehouse;
+    }
+
+    public function getHistoryAttribute()
+    {
+        return $this->planInfo()->has('history')->with('history')->get();
+    }
+
     /**
      * 计算采购单总价格和总数量
      * @return array

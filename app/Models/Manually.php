@@ -72,4 +72,9 @@ class Manually extends Model {
         return $this->hasMany(ManuallyProductVariant::class);
     }
 
+    public function getHistoryAttribute()
+    {
+        return $this->manuallyInfo()->has('history')->with('history')->get();
+    }
+
 }

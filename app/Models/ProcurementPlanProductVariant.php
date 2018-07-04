@@ -8,10 +8,17 @@ use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 
+/**
+ * Class ProcurementPlanProductVariant
+ * @package App\Models
+ */
 class ProcurementPlanProductVariant extends Pivot implements ModelContract
 {
     use ModelTrait;
 
+    /**
+     * @var string
+     */
     protected $table = 'procurement_plan_product_variant';
 
     /**
@@ -43,16 +50,33 @@ class ProcurementPlanProductVariant extends Pivot implements ModelContract
         return $this->hasOne(Procurement::class, 'procurement_plan_id', 'procurement_plan_id');
     }
 
+    /**
+     * @return int
+     */
     public function getTotalPrice(): int
     {
         return (int)$this->price * (int)$this->pcs;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function plan()
     {
         return $this->belongsTo(ProcurementPlan::class, 'procurement_plan_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function history()
+    {
+        return $this->morphMany(StorageHistory::class,'origin');
+    }
+
+    /**
+     * @return string
+     */
     public function getProcurementStatus()
     {
         $res = (int)$this->pcs - (int)$this->arrived_pcs;

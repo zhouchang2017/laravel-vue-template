@@ -38,8 +38,10 @@ $api->version('v1', [
     $api->get('warehouses/{id}/procurements','WarehouseController@procurements');
     // 审核采购计划
     $api->put('procurement_plans/{id}/approval','ProcurementPlanController@approval');
-    // 存入仓库
+    // 手工存入仓库
     $api->post('manuallies/{id}/put','ManuallyController@addStorage');
+    // 采购存入库存
+    $api->post('procurements/{id}/put','ProcurementController@addStorage');
 
     $api->post('login','Auth\AuthController@login');
     $api->post('logout','Auth\AuthController@logout');
