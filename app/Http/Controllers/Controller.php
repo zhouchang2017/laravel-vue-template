@@ -14,7 +14,8 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class Controller extends BaseController {
+class Controller extends BaseController
+{
     use Helpers, AuthorizesRequests, DispatchesJobs, ValidatesRequests, QueryTrait;
 
 
@@ -41,8 +42,8 @@ class Controller extends BaseController {
     private function mergeFormRequest()
     {
         $this->formRequest = array_merge(
-            ['store' => Request::class,
-                'update' => Request::class], $this->formRequest
+            [ 'store'  => Request::class,
+              'update' => Request::class ], $this->formRequest
         );
     }
 
@@ -152,6 +153,7 @@ class Controller extends BaseController {
     public function store()
     {
         $request = $this->getRequest(__FUNCTION__);
+
         $this->setModel($this->model::create($request->all()));
 //        return $this->response->item($this->model, new $this->transformer())->setStatusCode(201);
         return $this->response->created();

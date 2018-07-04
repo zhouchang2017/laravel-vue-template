@@ -13,7 +13,7 @@
 //Route::get('/test', 'TestController@index');
 Route::get('/test', function () {
 //    $manually =  new ManuallyService();
-
+        dd(takeCollect([1,2,4]));
 //    dd($manually->put());
 });
 Route::get('/test/xsd', 'TestController@xsd');

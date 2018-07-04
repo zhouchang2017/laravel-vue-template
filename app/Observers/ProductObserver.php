@@ -32,11 +32,11 @@ class ProductObserver
     public function created(Product $product)
     {
         // 同时创建产品对应的属性值
-        request()->has('attributes') && ProductAttribute::createInstance(request()->input('attributes'), $product);
+        // request()->has('attributes') && ProductAttribute::createInstance(request()->input('attributes'), $product);
         // 同时创建产品对应变体&变体与产品属性多对多关联
-        request()->has('variants') && $product->createVariant(request()->input('variants'));
+        // request()->has('variants') && $product->createVariant(request()->input('variants'));
         // 同时关联分类
-        request()->has('category_ids') && $product->syncCategories(request()->input('category_ids'));
+        // request()->has('category_ids') && $product->syncCategories(request()->input('category_ids'));
 
     }
 

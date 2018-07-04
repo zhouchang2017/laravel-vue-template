@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Exception;
 
-trait ModelTrait {
+trait ModelTrait
+{
     protected $fieldSearchable = [];
 
     /**
@@ -70,14 +71,14 @@ trait ModelTrait {
             return array_key_exists($key, $value) && !is_null($value[$key]);
         });
         return $attributes->mapWithKeys(function ($item) use ($key) {
-            return [$item[$key] => $item];
+            return [ $item[$key] => $item ];
         });
     }
 
     /**
      * 转换集合
-     * @param $attributes
-     * @return Collection
+     * @param array $attributes
+     * @return \Illuminate\Support\Collection
      */
     public function takeCollect($attributes): Collection
     {
