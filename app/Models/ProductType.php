@@ -6,7 +6,10 @@ namespace App\Models;
 class ProductType extends Model
 {
     protected $fillable = ['name','config'];
-
+    protected $fieldSearchable = [
+        'id',
+        'name'
+    ];
     /**
      * 应该被转换成原生类型的属性。
      *

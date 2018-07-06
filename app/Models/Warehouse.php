@@ -11,6 +11,11 @@ class Warehouse extends Model
 {
     protected $fillable = ['name','type_id'];
 
+    protected $fieldSearchable = [
+        'id',
+        'name'
+    ];
+
     public function type()
     {
         return $this->belongsTo(WarehouseType::class,'type_id');

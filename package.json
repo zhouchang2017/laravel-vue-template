@@ -14,11 +14,11 @@
         "babel-preset-stage-2": "^6.24.1",
         "bootstrap": "^4.0.0",
         "compression-webpack-plugin": "^1.1.11",
-        "cross-env": "^5.1",
+        "cross-env": "^5.2.0",
         "jquery": "^3.2",
         "js-cookie": "^2.2.0",
         "laravel-mix": "^2.0",
-        "laravel-mix-purgecss": "^2.1.0",
+        "laravel-mix-purgecss": "^2.2.0",
         "lodash": "^4.17.4",
         "popper.js": "^1.12",
         "stylus": "^0.54.5",
@@ -28,13 +28,13 @@
     "dependencies": {
         "vee-validate": "^2.0.9",
         "vform": "^1.0.0",
-        "vue-i18n": "^7.6.0",
+        "vue-i18n": "^7.8.1",
         "vue-meta": "^1.5.0",
         "vue-router": "^3.0.1",
         "vued3tree": "^3.5.0",
-        "vuetify": "^1.0.17",
+        "vuetify": "^1.1.1",
         "vuex": "^3.0.1",
-        "vuex-persistedstate": "^2.5.2",
+        "vuex-persistedstate": "^2.5.4",
         "vuex-router-sync": "^5.0.0"
     }
 }
