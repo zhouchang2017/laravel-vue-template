@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\WarehouseObserver;
+
 /**
  * 仓库
  * Class Warehouse
@@ -15,6 +17,18 @@ class Warehouse extends Model
         'id',
         'name'
     ];
+
+    /**
+     * 数据模型的启动方法
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::observe(WarehouseObserver::class);
+    }
 
     public function type()
     {

@@ -10,7 +10,7 @@ class WarehouseObserver
 
     public function created(Warehouse $warehouse)
     {
-        $this->createAddress($warehouse);
+        $this->updateOrCreateAddress($warehouse);
     }
 
     public function deleted(Warehouse $warehouse)
@@ -18,15 +18,26 @@ class WarehouseObserver
         $this->deleteAddress($warehouse);
     }
 
+    public function willUpdate(Warehouse $warehouse)
+    {
+        $this->updateOrCreateAddress($warehouse);
+    }
+
+
     /**
-     * 创建仓库地址
+     * 创建或更新仓库地址
      * @param Warehouse $warehouse
      * @return Warehouse
      */
-    private function createAddress(Warehouse $warehouse)
+    private function updateOrCreateAddress(Warehouse $warehouse)
     {
-        if(request()->has('address')){
-            $warehouse->addresses()->create(request()->input('address'));
+        if(request()->has('addresses')){
+            if($warehouse->addresses()->count()>=1){
+                $warehouse->addresses()->first()->update(request()->input('addresses'));
+            }else{
+                $warehouse->addresses()->create(request()->input('addresses'));
+            }
+
         }
         return $warehouse;
     }

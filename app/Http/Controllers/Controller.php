@@ -186,6 +186,7 @@ class Controller extends BaseController
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function update($id)
     {
