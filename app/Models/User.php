@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Contracts\ModelContract;
+use App\Traits\ModelTrait;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject,ModelContract
 {
-    use Notifiable;
-
+    use Notifiable,ModelTrait,HasRoles;
+    protected $guard_name = 'api';
     /**
      * The attributes that are mass assignable.
      *

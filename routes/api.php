@@ -6,6 +6,7 @@ $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
     'middleware'=>'api'
 ], function ($api) {
+    $api->get('users','TestController@test')->name('user.test');
     $api->resource('products', 'ProductController');
     $api->resource('product-types','ProductTypeController');
     $api->resource('attribute-groups','AttributeGroupController');

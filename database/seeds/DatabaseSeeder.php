@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(BalanceTableSeeder::class);
         $this->call(PaymentTableSeeder::class);
         $this->call(WarehouseTypeSeeder::class);
+        $this->call(RolesAndPermissionsSeeder::class);
     }
 }

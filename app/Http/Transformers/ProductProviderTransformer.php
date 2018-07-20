@@ -7,7 +7,7 @@ use App\Models\ProductProvider;
 class ProductProviderTransformer extends Transformer
 {
     protected $defaultIncludes = [];
-    protected $availableIncludes = [ 'info', 'payment' ];
+    protected $availableIncludes = [ 'info', 'payment','addresses' ];
 
     public function __construct($field = null)
     {
@@ -28,6 +28,11 @@ class ProductProviderTransformer extends Transformer
     public function includePayment(ProductProvider $productProvider)
     {
         return $this->item($productProvider->providerPayment, new ProductProviderPaymentTransformer());
+    }
+
+    public function includeAddresses(ProductProvider $productProvider)
+    {
+        return $this->collection($productProvider->addresses, new AddressTransformer());
     }
 
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contracts\ModelContract;
-use App\Models\Model;
 use App\Traits\QueryTrait;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,7 +27,7 @@ class Controller extends BaseController
      * @param $model
      * @param $transformer
      */
-    public function __construct(Model $model, $transformer)
+    public function __construct(ModelContract $model, $transformer)
     {
         $this->model = $model;
         $this->transformer = $transformer;
