@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 /**
+ * @module 产品类型管理
  * Class ProductTypeController
  * @package App\Http\Controllers\Api
  */
@@ -30,6 +31,7 @@ class ProductTypeController extends Controller
 
     /**
      * 为该产品类型添加属性组关联
+     * @permission 添加属性组
      * @param Request $request
      * @param $id
      * @return \Dingo\Api\Http\Response

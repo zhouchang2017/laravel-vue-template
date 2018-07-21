@@ -7,6 +7,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+/**
+ * @module 认证
+ * Class AuthController
+ * @package App\Http\Controllers\Api\Auth
+ */
 class AuthController extends Controller
 {
     /**
@@ -25,7 +30,7 @@ class AuthController extends Controller
 
     /**
      * Get a JWT via given credentials.
-     *
+     * @permission 登录
      * @return \Illuminate\Http\JsonResponse
      */
     public function login()
@@ -41,7 +46,7 @@ class AuthController extends Controller
 
     /**
      * Get the authenticated User.
-     *
+     * @permission 用户信息
      * @return \Illuminate\Http\JsonResponse
      */
     public function me()
@@ -51,7 +56,7 @@ class AuthController extends Controller
 
     /**
      * Log the user out (Invalidate the token).
-     *
+     * @permission 登出
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout()
@@ -62,6 +67,7 @@ class AuthController extends Controller
     }
 
     /**
+     * @permission 刷新token
      * Refresh a token.
      * 刷新token，如果开启黑名单，以前的token便会失效。
      * 值得注意的是用上面的getToken再获取一次Token并不算做刷新，两次获得的Token是并行的，即两个都可用。

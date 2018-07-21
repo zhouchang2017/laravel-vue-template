@@ -27,6 +27,11 @@ return [
         'role' => Spatie\Permission\Models\Role::class,
 
     ],
+    'generate' => [
+        'namespace'=> 'App\Http\Controllers\Api',
+        'moduleTag'=>'module',
+        'permissionTag'=>'permission'
+    ],
 
     'table_names' => [
 

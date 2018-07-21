@@ -6,6 +6,11 @@ use App\Http\Transformers\AttributeTransformer;
 use App\Models\Attribute;
 use App\Http\Controllers\Controller;
 
+/**
+ * @module 属性管理
+ * Class AttributeController
+ * @package App\Http\Controllers\Api
+ */
 class AttributeController extends Controller
 {
     /**

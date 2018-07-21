@@ -128,7 +128,7 @@ class Controller extends BaseController
     /**
      *
      * Display a listing of the resource.
-     *
+     * @permission 列表
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -146,7 +146,7 @@ class Controller extends BaseController
 
     /**
      * Store a newly created resource in storage.
-     *
+     * @permission 保存
      * @return \Illuminate\Http\Response
      */
     public function store()
@@ -161,7 +161,7 @@ class Controller extends BaseController
 
     /**
      * Display the specified resource.
-     *
+     * @permission 详情
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
@@ -182,7 +182,7 @@ class Controller extends BaseController
 
     /**
      * Update the specified resource in storage.
-     *
+     * @permission 更新
      * @param  int $id
      * @return \Illuminate\Http\Response
      * @throws \Exception
@@ -199,7 +199,7 @@ class Controller extends BaseController
 
     /**
      * Remove the specified resource from storage.
-     *
+     * @permission 删除
      * @param  int|string $id
      * @return \Illuminate\Http\Response
      */

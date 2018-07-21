@@ -8,16 +8,34 @@ use App\Models\Product;
 use App\Services\Product\ProductService;
 use Illuminate\Http\Request;
 
+/**
+ * @module 产品管理
+ * Class ProductController
+ * @package App\Http\Controllers\Api
+ */
 class ProductController extends Controller
 {
+    /**
+     * @var ProductService
+     */
     private $service;
 
+    /**
+     * ProductController constructor.
+     * @param Product $model
+     * @param ProductTransformer $transformer
+     * @param ProductService $service
+     */
     public function __construct(Product $model, ProductTransformer $transformer,ProductService $service)
     {
         parent::__construct($model, $transformer);
         $this->service = $service;
     }
 
+    /**
+     * @permission 保存
+     * @return \Dingo\Api\Http\Response|\Illuminate\Http\Response
+     */
     public function store()
     {
         $request = $this->getRequest(__FUNCTION__);
@@ -27,6 +45,12 @@ class ProductController extends Controller
     }
 
 
+    /**
+     * @permission 添加/更新分类
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function categories(Request $request, $id)
     {
         $this->setModel($this->model::findOrFail($id));

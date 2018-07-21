@@ -8,8 +8,8 @@ $api->version('v1', [
 ], function ($api) {
     $api->get('users','TestController@test')->name('user.test');
     $api->resource('products', 'ProductController');
-    $api->resource('product-types','ProductTypeController');
-    $api->resource('attribute-groups','AttributeGroupController');
+    $api->resource('product_types','ProductTypeController');
+    $api->resource('attribute_groups','AttributeGroupController');
     $api->resource('attributes','AttributeController');
     $api->resource('categories','CategoryController');
     $api->resource('balances','BalanceController');
@@ -22,36 +22,36 @@ $api->version('v1', [
     $api->resource('manuallies','ManuallyController');
 
     // 关联更新
-    $api->put('product-types/{id}/attributes','ProductTypeController@attributes');
+    $api->put('product_types/{id}/attributes','ProductTypeController@attributes')->name('product_type.attribute');
     // 产品组归属类型
-    $api->put('attribute-groups/{id}/types','AttributeGroupController@types');
+    $api->put('attribute_groups/{id}/types','AttributeGroupController@types')->name('attribute_group.type');
     // 产品组添加属性
-    $api->post('attribute-groups/{id}/attribute','AttributeGroupController@attribute');
+    $api->post('attribute_groups/{id}/attribute','AttributeGroupController@attribute')->name('attribute_group.attribute');
     // 产品分类添加产品
-    $api->post('categories/{id}/products','CategoryController@products');
+    $api->post('categories/{id}/products','CategoryController@products')->name('category.product');
     // 产品供应商管理产品
-    $api->post('product_providers/{id}/products','ProductProviderController@products');
+    $api->post('product_providers/{id}/products','ProductProviderController@products')->name('product_provider.product');
     // 仓库更新或创建地址
-    $api->post('warehouses/{id}/address','WarehouseController@address');
+    $api->post('warehouses/{id}/address','WarehouseController@address')->name('warehouse.address');
     // 获取关联的手动入仓列表
-    $api->get('warehouses/{id}/manuallise','WarehouseController@manuallise');
+    $api->get('warehouses/{id}/manuallise','WarehouseController@manuallise')->name('warehouse.manually');
     // 获取关联的采购单列表
-    $api->get('warehouses/{id}/procurements','WarehouseController@procurements');
+    $api->get('warehouses/{id}/procurements','WarehouseController@procurements')->name('warehouse.procurement');
     // 审核采购计划
-    $api->put('procurement_plans/{id}/approval','ProcurementPlanController@approval');
+    $api->put('procurement_plans/{id}/approval','ProcurementPlanController@approval')->name('procurement_plan.approval');
     // 手工存入仓库
-    $api->post('manuallies/{id}/put','ManuallyController@addStorage');
+    $api->post('manuallies/{id}/put','ManuallyController@addStorage')->name('manually.add_storage');
     // 采购存入库存
-    $api->post('procurements/{id}/put','ProcurementController@addStorage');
+    $api->post('procurements/{id}/put','ProcurementController@addStorage')->name('procurement.add_storage');
 
-    $api->post('login','Auth\AuthController@login');
-    $api->post('logout','Auth\AuthController@logout');
-    $api->post('me','Auth\AuthController@me');
+    $api->post('login','Auth\AuthController@login')->name('login');
+    $api->post('logout','Auth\AuthController@logout')->name('logout');
+    $api->post('me','Auth\AuthController@me')->name('me');
 });
 
 $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
     'middleware'=>'refresh.token'
 ], function ($api) {
-    $api->get('refresh','Auth\AuthController@refresh');
+    $api->get('refresh','Auth\AuthController@refresh')->name('refresh');
 });

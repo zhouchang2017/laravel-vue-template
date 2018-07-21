@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 /**
+ * @module 属性组管理
  * Class AttributeGroupController
  * @package App\Http\Controllers\Api
  */
@@ -29,6 +30,7 @@ class AttributeGroupController extends Controller
 
 
     /**
+     * @permission 关联产品类型
      * 为该产品属性组关联产品类型
      * @param Request $request
      * @param $id
@@ -59,6 +61,7 @@ class AttributeGroupController extends Controller
     }
 
     /**
+     * @permission 添加属性
      * 为产品组创建属性
      * @param array $attributes
      * @param $id

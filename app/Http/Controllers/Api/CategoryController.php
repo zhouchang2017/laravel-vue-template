@@ -11,14 +11,29 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 
+/**
+ * @module 产品分类管理
+ * Class CategoryController
+ * @package App\Http\Controllers\Api
+ */
 class CategoryController extends Controller
 {
+    /**
+     * CategoryController constructor.
+     * @param Category $model
+     * @param CategoryTransformer $transformer
+     */
     public function __construct(Category $model, CategoryTransformer $transformer)
     {
         parent::__construct($model, $transformer);
     }
 
 
+    /**
+     * @permission 列表
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         $query = $this->model::query();
@@ -34,6 +49,12 @@ class CategoryController extends Controller
     }
 
 
+    /**
+     * @permission 添加/更新关联产品
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function products(Request $request, $id)
     {
         $this->setModel($this->model::findOrFail($id));
