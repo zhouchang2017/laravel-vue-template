@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.6.23 on 2018-07-20 14:40:01.
+ * Generated for Laravel 5.6.23 on 2018-07-23 10:13:35.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1618,42 +1618,19 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function user()
         {
-            return \Illuminate\Auth\SessionGuard::user();
+            return \Tymon\JWTAuth\JWTGuard::user();
         }
         
         /**
-         * Get the ID for the currently authenticated user.
+         * Get the currently authenticated user or throws an exception.
          *
-         * @return int|null 
+         * @throws \Tymon\JWTAuth\Exceptions\UserNotDefinedException
+         * @return \App\Models\User 
          * @static 
          */ 
-        public static function id()
+        public static function userOrFail()
         {
-            return \Illuminate\Auth\SessionGuard::id();
-        }
-        
-        /**
-         * Log a user into the application without sessions or cookies.
-         *
-         * @param array $credentials
-         * @return bool 
-         * @static 
-         */ 
-        public static function once($credentials = array())
-        {
-            return \Illuminate\Auth\SessionGuard::once($credentials);
-        }
-        
-        /**
-         * Log the given user ID into the application without sessions or cookies.
-         *
-         * @param mixed $id
-         * @return \App\Models\User|false 
-         * @static 
-         */ 
-        public static function onceUsingId($id)
-        {
-            return \Illuminate\Auth\SessionGuard::onceUsingId($id);
+            return \Tymon\JWTAuth\JWTGuard::userOrFail();
         }
         
         /**
@@ -1665,212 +1642,198 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function validate($credentials = array())
         {
-            return \Illuminate\Auth\SessionGuard::validate($credentials);
+            return \Tymon\JWTAuth\JWTGuard::validate($credentials);
         }
         
         /**
-         * Attempt to authenticate using HTTP Basic Auth.
-         *
-         * @param string $field
-         * @param array $extraConditions
-         * @return \Symfony\Component\HttpFoundation\Response|null 
-         * @static 
-         */ 
-        public static function basic($field = 'email', $extraConditions = array())
-        {
-            return \Illuminate\Auth\SessionGuard::basic($field, $extraConditions);
-        }
-        
-        /**
-         * Perform a stateless HTTP Basic login attempt.
-         *
-         * @param string $field
-         * @param array $extraConditions
-         * @return \Symfony\Component\HttpFoundation\Response|null 
-         * @static 
-         */ 
-        public static function onceBasic($field = 'email', $extraConditions = array())
-        {
-            return \Illuminate\Auth\SessionGuard::onceBasic($field, $extraConditions);
-        }
-        
-        /**
-         * Attempt to authenticate a user using the given credentials.
+         * Attempt to authenticate the user using the given credentials and return the token.
          *
          * @param array $credentials
-         * @param bool $remember
+         * @param bool $login
+         * @return bool|string 
+         * @static 
+         */ 
+        public static function attempt($credentials = array(), $login = true)
+        {
+            return \Tymon\JWTAuth\JWTGuard::attempt($credentials, $login);
+        }
+        
+        /**
+         * Create a token for a user.
+         *
+         * @param \Tymon\JWTAuth\Contracts\JWTSubject $user
+         * @return string 
+         * @static 
+         */ 
+        public static function login($user)
+        {
+            return \Tymon\JWTAuth\JWTGuard::login($user);
+        }
+        
+        /**
+         * Logout the user, thus invalidating the token.
+         *
+         * @param bool $forceForever
+         * @return void 
+         * @static 
+         */ 
+        public static function logout($forceForever = false)
+        {
+            \Tymon\JWTAuth\JWTGuard::logout($forceForever);
+        }
+        
+        /**
+         * Refresh the token.
+         *
+         * @param bool $forceForever
+         * @param bool $resetClaims
+         * @return string 
+         * @static 
+         */ 
+        public static function refresh($forceForever = false, $resetClaims = false)
+        {
+            return \Tymon\JWTAuth\JWTGuard::refresh($forceForever, $resetClaims);
+        }
+        
+        /**
+         * Invalidate the token.
+         *
+         * @param bool $forceForever
+         * @return \Tymon\JWTAuth\JWT 
+         * @static 
+         */ 
+        public static function invalidate($forceForever = false)
+        {
+            return \Tymon\JWTAuth\JWTGuard::invalidate($forceForever);
+        }
+        
+        /**
+         * Create a new token by User id.
+         *
+         * @param mixed $id
+         * @return string|null 
+         * @static 
+         */ 
+        public static function tokenById($id)
+        {
+            return \Tymon\JWTAuth\JWTGuard::tokenById($id);
+        }
+        
+        /**
+         * Log a user into the application using their credentials.
+         *
+         * @param array $credentials
          * @return bool 
          * @static 
          */ 
-        public static function attempt($credentials = array(), $remember = false)
+        public static function once($credentials = array())
         {
-            return \Illuminate\Auth\SessionGuard::attempt($credentials, $remember);
+            return \Tymon\JWTAuth\JWTGuard::once($credentials);
         }
         
         /**
-         * Log the given user ID into the application.
+         * Log the given User into the application.
          *
          * @param mixed $id
-         * @param bool $remember
-         * @return \App\Models\User|false 
+         * @return bool 
          * @static 
          */ 
-        public static function loginUsingId($id, $remember = false)
+        public static function onceUsingId($id)
         {
-            return \Illuminate\Auth\SessionGuard::loginUsingId($id, $remember);
+            return \Tymon\JWTAuth\JWTGuard::onceUsingId($id);
         }
         
         /**
-         * Log a user into the application.
+         * Alias for onceUsingId.
          *
-         * @param \Illuminate\Contracts\Auth\Authenticatable $user
-         * @param bool $remember
-         * @return void 
+         * @param mixed $id
+         * @return bool 
          * @static 
          */ 
-        public static function login($user, $remember = false)
+        public static function byId($id)
         {
-            \Illuminate\Auth\SessionGuard::login($user, $remember);
+            return \Tymon\JWTAuth\JWTGuard::byId($id);
         }
         
         /**
-         * Log the user out of the application.
+         * Add any custom claims.
          *
-         * @return void 
-         * @static 
-         */ 
-        public static function logout()
-        {
-            \Illuminate\Auth\SessionGuard::logout();
-        }
-        
-        /**
-         * Invalid other sessions for the current user.
-         * 
-         * The application must be using the AuthenticateSession middleware.
-         *
-         * @param string $password
-         * @param string $attribute
+         * @param array $claims
          * @return $this 
          * @static 
          */ 
-        public static function logoutOtherDevices($password, $attribute = 'password')
+        public static function claims($claims)
         {
-            return \Illuminate\Auth\SessionGuard::logoutOtherDevices($password, $attribute);
+            return \Tymon\JWTAuth\JWTGuard::claims($claims);
         }
         
         /**
-         * Register an authentication attempt event listener.
+         * Get the raw Payload instance.
          *
-         * @param mixed $callback
-         * @return void 
+         * @return \Tymon\JWTAuth\Payload 
          * @static 
          */ 
-        public static function attempting($callback)
+        public static function getPayload()
         {
-            \Illuminate\Auth\SessionGuard::attempting($callback);
+            return \Tymon\JWTAuth\JWTGuard::getPayload();
         }
         
         /**
-         * Get the last user we attempted to authenticate.
+         * Alias for getPayload().
          *
-         * @return \App\Models\User 
+         * @return \Tymon\JWTAuth\Payload 
          * @static 
          */ 
-        public static function getLastAttempted()
+        public static function payload()
         {
-            return \Illuminate\Auth\SessionGuard::getLastAttempted();
+            return \Tymon\JWTAuth\JWTGuard::payload();
         }
         
         /**
-         * Get a unique identifier for the auth session value.
+         * Set the token.
          *
-         * @return string 
+         * @param \Tymon\JWTAuth\Token|string $token
+         * @return $this 
          * @static 
          */ 
-        public static function getName()
+        public static function setToken($token)
         {
-            return \Illuminate\Auth\SessionGuard::getName();
+            return \Tymon\JWTAuth\JWTGuard::setToken($token);
         }
         
         /**
-         * Get the name of the cookie used to store the "recaller".
+         * Set the token ttl.
          *
-         * @return string 
+         * @param int $ttl
+         * @return $this 
          * @static 
          */ 
-        public static function getRecallerName()
+        public static function setTTL($ttl)
         {
-            return \Illuminate\Auth\SessionGuard::getRecallerName();
+            return \Tymon\JWTAuth\JWTGuard::setTTL($ttl);
         }
         
         /**
-         * Determine if the user was authenticated via "remember me" cookie.
+         * Get the user provider used by the guard.
          *
-         * @return bool 
+         * @return \Illuminate\Contracts\Auth\UserProvider 
          * @static 
          */ 
-        public static function viaRemember()
+        public static function getProvider()
         {
-            return \Illuminate\Auth\SessionGuard::viaRemember();
+            return \Tymon\JWTAuth\JWTGuard::getProvider();
         }
         
         /**
-         * Get the cookie creator instance used by the guard.
+         * Set the user provider used by the guard.
          *
-         * @return \Illuminate\Contracts\Cookie\QueueingFactory 
-         * @throws \RuntimeException
+         * @param \Illuminate\Contracts\Auth\UserProvider $provider
+         * @return $this 
          * @static 
          */ 
-        public static function getCookieJar()
+        public static function setProvider($provider)
         {
-            return \Illuminate\Auth\SessionGuard::getCookieJar();
-        }
-        
-        /**
-         * Set the cookie creator instance used by the guard.
-         *
-         * @param \Illuminate\Contracts\Cookie\QueueingFactory $cookie
-         * @return void 
-         * @static 
-         */ 
-        public static function setCookieJar($cookie)
-        {
-            \Illuminate\Auth\SessionGuard::setCookieJar($cookie);
-        }
-        
-        /**
-         * Get the event dispatcher instance.
-         *
-         * @return \Illuminate\Contracts\Events\Dispatcher 
-         * @static 
-         */ 
-        public static function getDispatcher()
-        {
-            return \Illuminate\Auth\SessionGuard::getDispatcher();
-        }
-        
-        /**
-         * Set the event dispatcher instance.
-         *
-         * @param \Illuminate\Contracts\Events\Dispatcher $events
-         * @return void 
-         * @static 
-         */ 
-        public static function setDispatcher($events)
-        {
-            \Illuminate\Auth\SessionGuard::setDispatcher($events);
-        }
-        
-        /**
-         * Get the session store used by the guard.
-         *
-         * @return \Illuminate\Contracts\Session\Session 
-         * @static 
-         */ 
-        public static function getSession()
-        {
-            return \Illuminate\Auth\SessionGuard::getSession();
+            return \Tymon\JWTAuth\JWTGuard::setProvider($provider);
         }
         
         /**
@@ -1881,42 +1844,41 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function getUser()
         {
-            return \Illuminate\Auth\SessionGuard::getUser();
-        }
-        
-        /**
-         * Set the current user.
-         *
-         * @param \Illuminate\Contracts\Auth\Authenticatable $user
-         * @return $this 
-         * @static 
-         */ 
-        public static function setUser($user)
-        {
-            return \Illuminate\Auth\SessionGuard::setUser($user);
+            return \Tymon\JWTAuth\JWTGuard::getUser();
         }
         
         /**
          * Get the current request instance.
          *
-         * @return \Symfony\Component\HttpFoundation\Request 
+         * @return \Illuminate\Http\Request 
          * @static 
          */ 
         public static function getRequest()
         {
-            return \Illuminate\Auth\SessionGuard::getRequest();
+            return \Tymon\JWTAuth\JWTGuard::getRequest();
         }
         
         /**
          * Set the current request instance.
          *
-         * @param \Symfony\Component\HttpFoundation\Request $request
+         * @param \Illuminate\Http\Request $request
          * @return $this 
          * @static 
          */ 
         public static function setRequest($request)
         {
-            return \Illuminate\Auth\SessionGuard::setRequest($request);
+            return \Tymon\JWTAuth\JWTGuard::setRequest($request);
+        }
+        
+        /**
+         * Get the last user we attempted to authenticate.
+         *
+         * @return \App\Models\User 
+         * @static 
+         */ 
+        public static function getLastAttempted()
+        {
+            return \Tymon\JWTAuth\JWTGuard::getLastAttempted();
         }
         
         /**
@@ -1928,7 +1890,7 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function authenticate()
         {
-            return \Illuminate\Auth\SessionGuard::authenticate();
+            return \Tymon\JWTAuth\JWTGuard::authenticate();
         }
         
         /**
@@ -1939,7 +1901,7 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function check()
         {
-            return \Illuminate\Auth\SessionGuard::check();
+            return \Tymon\JWTAuth\JWTGuard::check();
         }
         
         /**
@@ -1950,68 +1912,30 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function guest()
         {
-            return \Illuminate\Auth\SessionGuard::guest();
+            return \Tymon\JWTAuth\JWTGuard::guest();
         }
         
         /**
-         * Get the user provider used by the guard.
+         * Get the ID for the currently authenticated user.
          *
-         * @return \Illuminate\Contracts\Auth\UserProvider 
+         * @return int|null 
          * @static 
          */ 
-        public static function getProvider()
+        public static function id()
         {
-            return \Illuminate\Auth\SessionGuard::getProvider();
+            return \Tymon\JWTAuth\JWTGuard::id();
         }
         
         /**
-         * Set the user provider used by the guard.
+         * Set the current user.
          *
-         * @param \Illuminate\Contracts\Auth\UserProvider $provider
-         * @return void 
+         * @param \Illuminate\Contracts\Auth\Authenticatable $user
+         * @return $this 
          * @static 
          */ 
-        public static function setProvider($provider)
+        public static function setUser($user)
         {
-            \Illuminate\Auth\SessionGuard::setProvider($provider);
-        }
-        
-        /**
-         * Register a custom macro.
-         *
-         * @param string $name
-         * @param object|callable $macro
-         * @return void 
-         * @static 
-         */ 
-        public static function macro($name, $macro)
-        {
-            \Illuminate\Auth\SessionGuard::macro($name, $macro);
-        }
-        
-        /**
-         * Mix another object into the class.
-         *
-         * @param object $mixin
-         * @return void 
-         * @throws \ReflectionException
-         * @static 
-         */ 
-        public static function mixin($mixin)
-        {
-            \Illuminate\Auth\SessionGuard::mixin($mixin);
-        }
-        
-        /**
-         * Checks if macro is registered.
-         *
-         * @param string $name
-         * @return bool 
-         * @static 
-         */ 
-        public static function hasMacro($name)
-        {
-            return \Illuminate\Auth\SessionGuard::hasMacro($name);
+            return \Tymon\JWTAuth\JWTGuard::setUser($user);
         }
          
     }

@@ -17,14 +17,14 @@ class Permission
      */
     public function handle($request, Closure $next)
     {
-        auth()->login(User::find(1));
-        $permissionName = $request->route()->getName();
-        if ($permission = $this->checkNeedPermission($permissionName)) {
-            dd($permission);
-        } else {
-            return $next($request);
-        }
-        dd(auth()->user()->can($request->route()->getName()));
+//        auth()->login(User::find(1));
+//        $permissionName = $request->route()->getName();
+//        if ($permission = $this->checkNeedPermission($permissionName)) {
+//            dd($permission);
+//        } else {
+//            return $next($request);
+//        }
+//        dd(auth()->user()->can($request->route()->getName()));
 //        dd($request->route()->getName());
         return $next($request);
     }

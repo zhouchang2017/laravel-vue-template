@@ -55,3 +55,11 @@ $api->version('v1', [
 ], function ($api) {
     $api->get('refresh','Auth\AuthController@refresh')->name('refresh');
 });
+
+$api->version('v2', [
+    'namespace' => 'App\Http\Controllers\Api\V2',
+    'middleware'=>'api',
+], function ($api) {
+    $api->post('login','UserController@login');
+    $api->get('me','UserController@me');
+});
