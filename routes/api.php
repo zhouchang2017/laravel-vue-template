@@ -62,4 +62,17 @@ $api->version('v2', [
 ], function ($api) {
     $api->post('login','UserController@login');
     $api->get('me','UserController@me');
+
+});
+
+$api->version('v2', [
+    'namespace' => 'App\Http\Controllers\Api',
+    'middleware'=>'api',
+], function ($api) {
+    $api->post('login','UserController@login');
+    $api->get('me','UserController@me');
+
+    $api->resource('balances','BalanceController');
+    $api->resource('payments','PaymentController');
+    $api->resource('product_providers','ProductProviderController');
 });

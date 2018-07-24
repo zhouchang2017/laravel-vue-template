@@ -73,14 +73,14 @@ class ProductProviderObserver
      */
     private function createOrUpdateAddress(ProductProvider $provider)
     {
-        if(request()->has('address')){
+        if(request()->has('addresses')){
             // 检测该供应商是否已经有地址
             if($provider->addresses->count()>0){
                 // update
-                $address = $provider->addresses->first()->store(request()->input('address'));
+                $address = $provider->addresses->first()->store(request()->input('addresses'));
             }else{
                 // create
-                $address = $provider->addresses()->create(request()->input('address'));
+                $address = $provider->addresses()->create(request()->input('addresses'));
             }
             $provider->setRelation('addresses', $address);
         }
