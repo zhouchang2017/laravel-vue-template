@@ -33,7 +33,7 @@ class ProductType extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function attributes()
+    public function attributeGroups()
     {
         return $this->belongsToMany(AttributeGroup::class,'product_type_attribute_group','type_id','group_id');
     }

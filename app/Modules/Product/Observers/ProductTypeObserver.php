@@ -20,6 +20,6 @@ class ProductTypeObserver
 
     private function relationAttributeGroup(ProductType $productType)
     {
-        request()->has('group_ids') && $productType->attributes()->sync(request('group_ids'));
+        request()->has('group_ids') && $productType->attributeGroups()->sync(request('group_ids'));
     }
 }
