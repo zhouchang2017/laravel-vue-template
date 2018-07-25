@@ -3,8 +3,8 @@
 namespace App\Modules\Product\Models;
 
 
-use Illuminate\Database\Eloquent\Model;
-
+use App\Modules\Product\Observers\ProductTypeObserver;
+use App\Modules\Scaffold\BaseModel as Model;
 class ProductType extends Model
 {
     protected $fillable = ['name','config'];
@@ -20,6 +20,12 @@ class ProductType extends Model
     protected $casts = [
         'config' => 'array',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        self::observe(ProductTypeObserver::class);
+    }
 
 
     public function products()

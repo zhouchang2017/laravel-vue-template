@@ -4,8 +4,7 @@ namespace App\Modules\Product\Models;
 
 
 //use App\Observers\ProductVariantObserver;
-use Illuminate\Database\Eloquent\Model;
-
+use App\Modules\Scaffold\BaseModel as Model;
 class ProductVariant extends Model
 {
     protected $fillable = [
@@ -13,7 +12,6 @@ class ProductVariant extends Model
         'sku',
         'options',
         'price',
-        'stock',
     ];
 
     /**
@@ -54,7 +52,7 @@ class ProductVariant extends Model
 
     public function providers()
     {
-        return $this->belongsToMany(ProductProvider::class,'variant_provider')->withPivot('price')->withTimestamps();
+        // return $this->belongsToMany(ProductProvider::class,'variant_provider')->withPivot('price')->withTimestamps();
     }
 
     public function createInfo($attributes)
@@ -66,7 +64,7 @@ class ProductVariant extends Model
 
     public function planInfo()
     {
-        return $this->hasMany(ProcurementPlanProductVariant::class);
+        // return $this->hasMany(ProcurementPlanProductVariant::class);
     }
 
 

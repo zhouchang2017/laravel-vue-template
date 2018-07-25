@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contracts\ModelContract;
 use App\Traits\QueryTrait;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -27,7 +27,7 @@ class Controller extends BaseController
      * @param $model
      * @param $transformer
      */
-    public function __construct(ModelContract $model, $transformer)
+    public function __construct(Model $model, $transformer)
     {
         $this->model = $model;
         $this->transformer = $transformer;
@@ -48,10 +48,10 @@ class Controller extends BaseController
 
 
     /**
-     * @param ModelContract $model
+     * @param Model $model
      * @return $this
      */
-    public function setModel(ModelContract $model)
+    public function setModel(Model $model)
     {
         $this->model = $model;
         return $this;
@@ -134,12 +134,7 @@ class Controller extends BaseController
      */
     public function index(Request $request)
     {
-
         $query = $this->getQuery();
-
-//        if ($request->has('q')) {
-//            $query->where('name', 'like', "{$request->get('q')}%");
-//        }
         $paginate = $this->parseFilter($query);
         return $this->response->paginator($paginate, new $this->transformer());
     }

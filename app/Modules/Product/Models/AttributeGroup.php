@@ -2,9 +2,8 @@
 
 namespace App\Modules\Product\Models;
 
-use App\Observers\AttributeGroupObserver;
-use Illuminate\Database\Eloquent\Model;
-
+//use App\Observers\AttributeGroupObserver;
+use App\Modules\Scaffold\BaseModel as Model;
 class AttributeGroup extends Model
 {
     protected $fillable = [
@@ -41,14 +40,9 @@ class AttributeGroup extends Model
     {
         parent::boot();
 
-        static::observe(AttributeGroupObserver::class);
+//        static::observe(AttributeGroupObserver::class);
     }
 
-
-    public function scopeSkuAttributes($query)
-    {
-        return $query->where('variant',true);
-    }
 
     public function isVariant()
     {

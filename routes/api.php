@@ -63,15 +63,21 @@ $api->version('v2', [
     $api->post('login','UserController@login');
     $api->get('me','UserController@me');
 
+    // 品牌
+    $api->resource('brands','BrandController');
+    // 产品类型
+    $api->resource('product-types','ProductTypeController');
+    // 属性组
+    $api->resource('attribute-groups','AttributeGroupController');
+    // 属性值
+    $api->resource('attributes','AttributeController');
+
 });
 
 $api->version('v2', [
     'namespace' => 'App\Http\Controllers\Api',
     'middleware'=>'api',
 ], function ($api) {
-    $api->post('login','UserController@login');
-    $api->get('me','UserController@me');
-
     $api->resource('balances','BalanceController');
     $api->resource('payments','PaymentController');
     $api->resource('product_providers','ProductProviderController');

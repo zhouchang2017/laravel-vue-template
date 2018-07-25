@@ -3,8 +3,8 @@
 namespace App\Modules\Product\Models;
 
 
-use App\Observers\ProductObserver;
-use Illuminate\Database\Eloquent\Model;
+//use App\Observers\ProductObserver;
+use App\Modules\Scaffold\BaseModel as Model;
 use Illuminate\Support\Collection;
 use Log;
 
@@ -23,8 +23,9 @@ class Product extends Model
         'name_cn',
         'name_en',
         'enabled',
-        'product_type_id',
+        'type_id',
         'body',
+        'brand_id'
     ];
 
     /**
@@ -45,7 +46,7 @@ class Product extends Model
     {
         parent::boot();
 
-        self::observe(ProductObserver::class);
+//        self::observe(ProductObserver::class);
     }
 
     /**
@@ -53,7 +54,7 @@ class Product extends Model
      */
     public function type()
     {
-        return $this->belongsTo(ProductType::class, 'product_type_id');
+        return $this->belongsTo(ProductType::class, 'type_id');
     }
 
     /**
@@ -87,12 +88,12 @@ class Product extends Model
      */
     public function providers(): Collection
     {
-        return $this->variants->reduce(function ($collect, $variant) {
-            $variant->providers->each(function ($provider) use ($collect) {
-                $collect->push($provider);
-            });
-            return $collect;
-        }, new Collection());
+//        return $this->variants->reduce(function ($collect, $variant) {
+//            $variant->providers->each(function ($provider) use ($collect) {
+//                $collect->push($provider);
+//            });
+//            return $collect;
+//        }, new Collection());
     }
 
     /**
@@ -299,7 +300,7 @@ class Product extends Model
      */
     public function dissociatedProductAttribute()
     {
-        $groupIds = $this->getGroupId($this->getOriginal('product_type_id'))
+        $groupIds = $this->getGroupId($this->getOriginal('type_id'))
             ->diff($this->type->attributes->pluck('id'))->toArray();
         if (count($groupIds) > 0) {
             $this->attributes()->whereIn('attribute_group_id', $groupIds)->get()

@@ -3,9 +3,10 @@
 namespace App\Modules\Product\Models;
 
 
-use App\Observers\ProductAttributeObserver;
-use Illuminate\Database\Eloquent\Model;
+//use App\Observers\ProductAttributeObserver;
+use App\Modules\Scaffold\BaseModel as Model;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class ProductAttribute
@@ -13,6 +14,7 @@ use Illuminate\Support\Collection;
  */
 class ProductAttribute extends Model
 {
+    use SoftDeletes;
     /**
      * @var array
      */
@@ -38,7 +40,7 @@ class ProductAttribute extends Model
     {
         parent::boot();
 
-        self::observe(ProductAttributeObserver::class);
+//        self::observe(ProductAttributeObserver::class);
     }
 
     /**

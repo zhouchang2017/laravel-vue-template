@@ -3,8 +3,7 @@
 namespace App\Modules\Product\Models;
 
 //use App\Observers\AttributeObserver;
-use Illuminate\Database\Eloquent\Model;
-
+use App\Modules\Scaffold\BaseModel as Model;
 class Attribute extends Model
 {
     protected $fillable = [
@@ -36,7 +35,7 @@ class Attribute extends Model
         return $this->belongsTo(AttributeGroup::class);
     }
 
-    public function productAttribute()
+    public function productAttributes()
     {
         return $this->hasMany(ProductAttribute::class, 'attribute_id', 'id');
     }

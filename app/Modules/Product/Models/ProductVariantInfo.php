@@ -3,8 +3,7 @@
 namespace App\Modules\Product\Models;
 
 
-use Illuminate\Database\Eloquent\Model;
-
+use App\Modules\Scaffold\BaseModel as Model;
 class ProductVariantInfo extends Model
 {
     protected $table = 'product_variant_info';
