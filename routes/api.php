@@ -71,6 +71,8 @@ $api->version('v2', [
     $api->resource('attribute-groups','AttributeGroupController');
     // 属性值
     $api->resource('attributes','AttributeController');
+    // 产品
+    $api->resource('products','ProductController');
 
 });
 

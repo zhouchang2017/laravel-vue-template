@@ -7,7 +7,7 @@ use App\Modules\Product\Models\AttributeGroup;
 
 class AttributeGroupTransformer extends Transformer
 {
-    protected $availableIncludes = [  ];
+    protected $availableIncludes = [ 'values' ];
 
     public function __construct($field = null)
     {
@@ -18,6 +18,11 @@ class AttributeGroupTransformer extends Transformer
     {
         $this->hidden && $attributeGroup->addHidden($this->hidden);
         return $attributeGroup->attributesToArray();
+    }
+
+    public function includeValues(AttributeGroup $attributeGroup)
+    {
+        return $this->collection($attributeGroup->values, new AttributeTransformer());
     }
 
 

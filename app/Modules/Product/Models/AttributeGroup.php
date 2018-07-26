@@ -2,7 +2,7 @@
 
 namespace App\Modules\Product\Models;
 
-//use App\Observers\AttributeGroupObserver;
+use App\Modules\Product\Observers\AttributeGroupObserver;
 use App\Modules\Scaffold\BaseModel as Model;
 class AttributeGroup extends Model
 {
@@ -40,7 +40,7 @@ class AttributeGroup extends Model
     {
         parent::boot();
 
-//        static::observe(AttributeGroupObserver::class);
+        static::observe(AttributeGroupObserver::class);
     }
 
 
