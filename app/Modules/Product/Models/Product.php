@@ -3,7 +3,7 @@
 namespace App\Modules\Product\Models;
 
 
-use App\Modules\Product\Observers\ProductProviderObserver;
+//use App\Modules\Product\Observers\ProductObserver;
 use App\Modules\Scaffold\BaseModel as Model;
 use Illuminate\Support\Collection;
 use Log;
@@ -46,7 +46,7 @@ class Product extends Model
     {
         parent::boot();
 
-        self::observe(ProductProviderObserver::class);
+//        self::observe(ProductProviderObserver::class);
     }
 
     /**
