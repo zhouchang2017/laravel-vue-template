@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\V2;
 use App\Http\Controllers\Controller;
-use App\Http\Transformers\ProductProviderTransformer;
-use App\Models\ProductProvider;
+use App\Modules\ProductProvider\Models\ProductProvider;
+use App\Modules\ProductProvider\Transformers\ProductProviderTransformer;
 use Illuminate\Http\Request;
 
 /**

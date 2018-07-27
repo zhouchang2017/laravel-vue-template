@@ -73,7 +73,10 @@ $api->version('v2', [
     $api->resource('attributes','AttributeController');
     // 产品
     $api->resource('products','ProductController');
-
+    // 产品分类
+    $api->resource('categories','CategoryController');
+    // 产品供应商
+    $api->resource('product_providers','ProductProviderController');
 });
 
 $api->version('v2', [
@@ -82,5 +85,5 @@ $api->version('v2', [
 ], function ($api) {
     $api->resource('balances','BalanceController');
     $api->resource('payments','PaymentController');
-    $api->resource('product_providers','ProductProviderController');
+
 });

@@ -3,7 +3,7 @@
 namespace App\Modules\Product\Models;
 
 
-//use App\Observers\ProductObserver;
+use App\Modules\Product\Observers\ProductProviderObserver;
 use App\Modules\Scaffold\BaseModel as Model;
 use Illuminate\Support\Collection;
 use Log;
@@ -46,7 +46,7 @@ class Product extends Model
     {
         parent::boot();
 
-//        self::observe(ProductObserver::class);
+        self::observe(ProductProviderObserver::class);
     }
 
     /**
@@ -55,6 +55,11 @@ class Product extends Model
     public function type()
     {
         return $this->belongsTo(ProductType::class, 'type_id');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 
     /**
@@ -113,18 +118,14 @@ class Product extends Model
      */
     public function createAttributes($attributes)
     {
-        $attributes = $this->takeCollect($attributes);
+        $attributes = collect($attributes);
         return $attributes->reduce(function ($res, $attribute) {
             if (array_key_exists('comment', $attribute) && !is_null($attribute['comment'])) {
-                $attributeInstance = new ProductAttribute(ProductAttribute::filterKeys($attribute));
-                $this->attributes()->save($attributeInstance);
-                $res->push($attributeInstance);
+                $res->push($this->attributes()->create($attribute));
             } else {
                 $groupId = $attribute['attribute_group_id'];
                 collect($attribute['attribute_id'])->map(function ($attributeId) use ($groupId, $res) {
-                    $attributeInstance = new ProductAttribute(ProductAttribute::filterKeys([ 'attribute_group_id' => $groupId, 'attribute_id' => $attributeId ]));
-                    $this->attributes()->save($attributeInstance);
-                    $res->push($attributeInstance);
+                    $res->push($this->attributes()->create([ 'attribute_group_id' => $groupId, 'attribute_id' => $attributeId ]));
                 });
             }
             return $res;
@@ -139,19 +140,21 @@ class Product extends Model
      */
     public function createVariant($attributes)
     {
-        $attributes = $this->takeCollect($attributes);
+        $attributes = collect($attributes);
         return $attributes->map(function ($variant) {
-            $productAttributeIds = $this->getAttributesIdBy('attribute_id', $variant['attributes'])->toArray();
-            $variantInstance = $this->variants()->create($variant);
+            /** @var ProductVariant $variantInstance */
+            $variantInstance = $this->variants()->create(array_only($variant,['price','sku']));
             // 关联供应商
-            if (array_key_exists('providers', $variant)) {
-                $variantInstance->providers()->sync($variant['providers']);
-            }
-            if (array_key_exists('info', $variant)) {
-                $variantInstance->createInfo($variant['info']);
-            }
+//            if (array_key_exists('providers', $variant)) {
+//                $variantInstance->providers()->sync($variant['providers']);
+//            }
+//            if (array_key_exists('info', $variant)) {
+//                $variantInstance->createInfo($variant['info']);
+//            }
             // 同步多对多关联产品属性值
-            $variantInstance->attributes()->sync($productAttributeIds);
+            $variantInstance->attributes()->sync(
+                $this->getAttributesIdBy('attribute_id',array_get($variant,'attributes'))
+            );
             return $variantInstance->id;
         });
     }
