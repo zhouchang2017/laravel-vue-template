@@ -28,6 +28,7 @@ class Product extends Model
         'brand_id'
     ];
 
+
     /**
      * 应该被转换成原生类型的属性。
      *

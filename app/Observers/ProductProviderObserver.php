@@ -4,6 +4,7 @@ namespace App\Observers;
 
 
 use App\Models\ProductProvider;
+use Log;
 
 /**
  * Class ProductProviderObserver
@@ -17,6 +18,7 @@ class ProductProviderObserver
      */
     public function created(ProductProvider $provider)
     {
+        Log::info('run created');
         $this->createPayment($provider);
         $this->createInfo($provider);
         $this->createOrUpdateAddress($provider);
@@ -48,6 +50,7 @@ class ProductProviderObserver
      */
     private function createInfo(ProductProvider $provider)
     {
+        Log::info('run createInfo');
         if (request()->has('info')) {
             $info = $provider->info()->create(request()->input('info'));
             $provider->setRelation('info', $info);
@@ -73,6 +76,7 @@ class ProductProviderObserver
      */
     private function createOrUpdateAddress(ProductProvider $provider)
     {
+        Log::info('run createOrUpdateAddress');
         if(request()->has('addresses')){
             // 检测该供应商是否已经有地址
             if($provider->addresses->count()>0){
@@ -111,6 +115,7 @@ class ProductProviderObserver
      */
     private function createPayment(ProductProvider $provider)
     {
+        Log::info('run createPayment');
         if (request()->has('payment')) {
             $payment = $provider->providerPayment()->create(request()->input('payment'));
             $provider->setRelation('payment', $payment);

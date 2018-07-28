@@ -7,7 +7,7 @@ use App\Modules\Scaffold\Transformer;
 
 class ProductAttributeTransformer extends Transformer
 {
-    protected $availableIncludes = [ 'group', 'value' ];
+    protected $availableIncludes = [ 'group', 'value','attributeValue' ];
 
     public function __construct($field = null)
     {
@@ -23,6 +23,17 @@ class ProductAttributeTransformer extends Transformer
     public function includeGroup(ProductAttribute $attribute)
     {
         return $this->item($attribute->group, new AttributeGroupTransformer());
+    }
+
+    public function includeAttributeValue(ProductAttribute $attribute)
+    {
+        if ($attribute->comment) {
+            return $this->primitive([ 'data' => [ 'value' => $attribute->getAttribute('comment') ] ]);
+        }
+        if (is_null($attribute->attributeValue)) {
+            return $this->primitive([]);
+        }
+        return $this->item($attribute->attributeValue, new AttributeTransformer());
     }
 
 

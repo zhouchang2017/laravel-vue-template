@@ -77,6 +77,8 @@ $api->version('v2', [
     $api->resource('categories','CategoryController');
     // 产品供应商
     $api->resource('product_providers','ProductProviderController');
+    // 产品供应商关联产品
+    $api->post('product_providers/{id}/products','ProductProviderController@products');
 });
 
 $api->version('v2', [

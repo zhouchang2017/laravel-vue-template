@@ -7,6 +7,8 @@ use App\Modules\Scaffold\Transformer;
 
 class ProductVariantTransformer extends Transformer
 {
+    protected $defaultIncludes = ['pivot'];
+
     protected $availableIncludes = [ 'attributes', 'product', 'providers', 'plan_info', 'manually_info','name' ];
 
     public function __construct($field = null)
@@ -20,6 +22,10 @@ class ProductVariantTransformer extends Transformer
         return $variant->attributesToArray();
     }
 
+    public function includePivot(ProductVariant $variant)
+    {
+        return $this->primitive($variant->pivot);
+    }
 
     public function includeAttributes(ProductVariant $variant)
     {

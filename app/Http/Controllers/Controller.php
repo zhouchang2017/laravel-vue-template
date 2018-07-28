@@ -186,7 +186,6 @@ class Controller extends BaseController
         $request = $this->getRequest(__FUNCTION__);
         $this->setModelBy($id);
         $this->model->update($request->all());
-        $this->registerEvent('afterUpdated');
 //        return $this->response->item($this->model, new $this->transformer())->setStatusCode(201);
         return $this->response->noContent();
     }

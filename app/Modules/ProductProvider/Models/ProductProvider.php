@@ -7,6 +7,12 @@ use App\Modules\ProductProvider\Observers\ProductProviderObserver;
 use App\Modules\Scaffold\BaseModel as Model;
 use App\Modules\Scaffold\Models\Address;
 
+/**
+ * @property mixed providerPayment
+ * @property mixed addresses
+ * @property mixed info
+ * @property mixed products
+ */
 class ProductProvider extends Model
 {
     protected $fillable = [
