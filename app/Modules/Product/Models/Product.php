@@ -25,8 +25,10 @@ class Product extends Model
         'enabled',
         'type_id',
         'body',
-        'brand_id'
+        'brand_id',
     ];
+
+    protected $fieldSearchable = [ 'name', 'code', 'name_cn', 'name_en' ];
 
 
     /**
@@ -144,7 +146,7 @@ class Product extends Model
         $attributes = collect($attributes);
         return $attributes->map(function ($variant) {
             /** @var ProductVariant $variantInstance */
-            $variantInstance = $this->variants()->create(array_only($variant,['price','sku']));
+            $variantInstance = $this->variants()->create(array_only($variant, [ 'price', 'sku' ]));
             // 关联供应商
 //            if (array_key_exists('providers', $variant)) {
 //                $variantInstance->providers()->sync($variant['providers']);
@@ -154,7 +156,7 @@ class Product extends Model
 //            }
             // 同步多对多关联产品属性值
             $variantInstance->attributes()->sync(
-                $this->getAttributesIdBy('attribute_id',array_get($variant,'attributes'))
+                $this->getAttributesIdBy('attribute_id', array_get($variant, 'attributes'))
             );
             return $variantInstance->id;
         });

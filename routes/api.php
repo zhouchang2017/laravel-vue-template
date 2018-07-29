@@ -58,9 +58,9 @@ $api->version('v1', [
 
 $api->version('v2', [
     'namespace' => 'App\Http\Controllers\Api\V2',
-    'middleware'=>'api',
+    'middleware'=>'auth:api',
 ], function ($api) {
-    $api->post('login','UserController@login');
+
     $api->get('me','UserController@me');
 
     // 品牌
@@ -85,6 +85,8 @@ $api->version('v2', [
     'namespace' => 'App\Http\Controllers\Api',
     'middleware'=>'api',
 ], function ($api) {
+    $api->post('login','V2\UserController@login');
+
     $api->resource('balances','BalanceController');
     $api->resource('payments','PaymentController');
 
