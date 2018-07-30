@@ -7,7 +7,7 @@ use App\Modules\Product\Models\Category;
 
 class CategoryTransformer extends Transformer
 {
-    protected $availableIncludes = [  ];
+    protected $availableIncludes = [ 'children','products','product_count' ];
 
     public function __construct($field = null)
     {
@@ -18,6 +18,21 @@ class CategoryTransformer extends Transformer
     {
         $this->hidden && $category->addHidden($this->hidden);
         return $category->attributesToArray();
+    }
+
+    public function includeProducts(Category $category)
+    {
+        return $this->collection($category->products, new ProductTransformer());
+    }
+
+    public function includeChildren(Category $category)
+    {
+        return $this->collection($category->children, new $this());
+    }
+
+    public function includeProductCount(Category $category)
+    {
+        return $this->primitive($category->getProductCountAttribute());
     }
 
 

@@ -251,4 +251,160 @@ class ProductService extends BaseService
     {
         return $this->product->attributes()->whereIn('attribute_id',$keys)->pluck($primaryKey);
     }
+
+
+    public function update($id,array $attributes)
+    {
+        try{
+            DB::beginTransaction();
+            /** @var Product $product */
+            $product = $this->product::findOrFail($id);
+            if($product){
+                $this->setProduct($product);
+            }
+            $this->product->update($attributes);
+
+            /*
+             * Create Product Attribute
+             * */
+            request()->has('attributes')
+            && $this->updateAttributes(request()->input('attributes'));
+
+            /*
+             * Create Product Variants
+             * */
+            request()->has('variants')
+            && $this->updateVariant(request('variants'));
+
+            DB::commit();
+        }catch (\Exception $exception){
+            DB::rollBack();
+            Log::error('创建产品失败');
+        }
+    }
+
+    /**
+     * 更新属性
+     * @param array $attributes
+     * @return array|mixed
+     */
+    private function updateAttributes(array $attributes)
+    {
+        $update = [];
+        $changes = $this->attributesMapWithKeys($attributes);
+        $update = $this->product->attributes()->get()->reduce(function ($res, $attribute) use ($changes) {
+            /** @var ProductAttribute $attribute */
+            if (is_null($changes->get($attribute->id))) {
+                $attribute->delete();
+                $res['deleted'][] = $attribute->id;
+            } else {
+                $attribute->update($changes->get($attribute->id));
+                if (count($attribute->getChanges()) > 0) {
+                    $res['updated'][] = $attribute->id;
+                }
+            }
+            return $res;
+        }, $update);
+
+        $update['created'] = $this->product->createAttributes($this->findAddAttributes($attributes))->pluck('id')->toArray();
+        Log::info('updateAttributes:', $update);
+
+
+        return $update;
+    }
+
+
+    /**
+     * @param array $attributes
+     * @return array
+     */
+    private function updateVariant(array $attributes)
+    {
+        $update = [ 'updated' => [], 'deleted' => [] ];
+        // 1.有id    更新（库存，价格，info)
+        $changes = $this->attributesMapWithKeys($attributes);
+        $update = $this->product->variants->reduce(function ($res, $variant) use ($changes) {
+            /** @var ProductVariant $variant */
+            if (is_null($changes->get($variant->id))) {
+                $variant->delete();
+                $res['deleted'][] = $variant->id;
+            } else {
+                $updateAttribute = $changes->get($variant->id);
+
+                $variant->update($updateAttribute);
+
+                $variant->attributes()->sync($this->getAttributesIdBy('attribute_id', $updateAttribute['attributes']));
+
+
+                // 关联供应商
+                if (array_key_exists('providers', $updateAttribute)) {
+                    $variant->providers()->sync($updateAttribute['providers']);
+                }
+
+                if (count($variant->getChanges()) > 0) {
+                    $res['updated'][] = $variant->id;
+                }
+
+            }
+            return $res;
+        }, $update);
+
+        // 2.无id    创建
+        $update['created'] = $this->createProductVariant($this->findAddAttributes($attributes))->toArray();
+        Log::info('updateVariant:', $update);
+        return $update;
+    }
+
+    /**
+     * 通过字段获取product_attribute 表id
+     * @param $field
+     * @param $fieldId
+     * @return Collection
+     */
+    public function getAttributesIdBy($field, $fieldId)
+    {
+        return $this->product->attributes()->whereIn($field, $fieldId)->pluck('id');
+    }
+
+    public function attributesMapWithKeys(iterable $attributes, $key = 'id'): Collection
+    {
+        $attributes = $this->takeCollect($attributes);
+        // 过滤不存在$key的元素
+        $attributes = $attributes->filter(function ($value) use ($key) {
+            return array_key_exists($key, $value) && !is_null($value[$key]);
+        });
+        return $attributes->mapWithKeys(function ($item) use ($key) {
+            return [ $item[$key] => $item ];
+        });
+    }
+
+    /**
+     * 转换集合
+     * @param array $attributes
+     * @return \Illuminate\Support\Collection
+     */
+    public function takeCollect($attributes): Collection
+    {
+        if ( !$attributes instanceof Collection) {
+            return collect($attributes);
+        }
+        return $attributes;
+    }
+
+    /**
+     * 过滤需要创建的新属性
+     * @param array|Collection $attributes
+     * @param string $key
+     * @return Collection
+     */
+    private function findAddAttributes($attributes, $key = 'id'): Collection
+    {
+        $attributes = $this->takeCollect($attributes);
+        return $attributes->reduce(function ($res, $attribute) use ($key) {
+            if ( !array_key_exists('id', $attribute) || is_null($attribute['id'])) {
+                $res->push($attribute);
+            };
+            return $res;
+        }, new Collection());
+    }
 }

@@ -7,7 +7,7 @@ use App\Modules\Product\Models\Product;
 
 class ProductTransformer extends Transformer
 {
-    protected $availableIncludes = [ 'brand','type','attributes','variants' ];
+    protected $availableIncludes = ['brand', 'type', 'attributes', 'variants', 'categories'];
 
     public function __construct($field = null)
     {
@@ -32,12 +32,17 @@ class ProductTransformer extends Transformer
 
     public function includeAttributes(Product $product)
     {
-        return $this->collection($product->attributes,new ProductAttributeTransformer());
+        return $this->collection($product->attributes, new ProductAttributeTransformer());
     }
 
     public function includeVariants(Product $product)
     {
-        return $this->collection($product->variants,new ProductVariantTransformer());
+        return $this->collection($product->variants, new ProductVariantTransformer());
+    }
+
+    public function includeCategories(Product $product)
+    {
+        return $this->collection($product->categories, new CategoryTransformer());
     }
 
 

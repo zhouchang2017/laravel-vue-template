@@ -15,8 +15,6 @@ class CategoryController extends Controller
     }
 
 
-
-
     /**
      * @permission 添加/更新关联产品
      * @param Request $request
@@ -27,6 +25,19 @@ class CategoryController extends Controller
     {
         $this->setModel($this->model::findOrFail($id));
         return response()->json([ 'data' => $this->model->products()->sync($request->input('product_ids')) ]);
+    }
+
+
+    public function attachProducts(Request $request, $id)
+    {
+        $this->setModel($this->model::findOrFail($id));
+        return response()->json([ 'data' => $this->model->products()->attach($request->input('product_ids')) ]);
+    }
+
+    public function detachProducts(Request $request, $id)
+    {
+        $this->setModel($this->model::findOrFail($id));
+        return response()->json([ 'data' => $this->model->products()->detach($request->input('product_ids')) ]);
     }
 
     /**

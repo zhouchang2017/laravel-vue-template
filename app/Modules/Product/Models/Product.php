@@ -10,6 +10,7 @@ use Log;
 
 /**
  * Class Product
+ * @property mixed variants
  * @package App\Models
  */
 class Product extends Model
@@ -96,12 +97,12 @@ class Product extends Model
      */
     public function providers(): Collection
     {
-//        return $this->variants->reduce(function ($collect, $variant) {
-//            $variant->providers->each(function ($provider) use ($collect) {
-//                $collect->push($provider);
-//            });
-//            return $collect;
-//        }, new Collection());
+        return $this->variants->reduce(function ($collect, $variant) {
+            $variant->providers->each(function ($provider) use ($collect) {
+                $collect->push($provider);
+            });
+            return $collect;
+        }, new Collection());
     }
 
     /**

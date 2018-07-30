@@ -75,6 +75,12 @@ $api->version('v2', [
     $api->resource('products','ProductController');
     // 产品分类
     $api->resource('categories','CategoryController');
+    // 产品分类关联产品
+    $api->post('categories/{id}/products','CategoryController@products');
+
+    $api->post('categories/{id}/products/attach','CategoryController@attachProducts');
+
+    $api->post('categories/{id}/products/detach','CategoryController@detachProducts');
     // 产品供应商
     $api->resource('product_providers','ProductProviderController');
     // 产品供应商关联产品

@@ -23,4 +23,10 @@ class ProductController extends Controller
         app(ProductService::class)->create(request()->all());
         return $this->response->created();
     }
+
+    public function update($id)
+    {
+        app(ProductService::class)->update($id,request()->all());
+        return $this->response->noContent();
+    }
 }
