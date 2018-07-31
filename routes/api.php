@@ -58,7 +58,7 @@ $api->version('v1', [
 
 $api->version('v2', [
     'namespace' => 'App\Http\Controllers\Api\V2',
-    'middleware'=>'auth:api',
+    'middleware'=>['refresh.token'],
 ], function ($api) {
 
     $api->get('me','UserController@me');
@@ -91,8 +91,8 @@ $api->version('v2', [
     'namespace' => 'App\Http\Controllers\Api',
     'middleware'=>'api',
 ], function ($api) {
-    $api->post('login','V2\UserController@login');
-
+    $api->post('login','V2\UserController@login')->name('login');
+    $api->post('logout','V2\UserController@logout')->name('logout');
     $api->resource('balances','BalanceController');
     $api->resource('payments','PaymentController');
 
