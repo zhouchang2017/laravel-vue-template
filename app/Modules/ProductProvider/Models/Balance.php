@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Modules\ProductProvider\Models;
-
 use App\Modules\Scaffold\BaseModel as Model;
 /**
  * 结算方式

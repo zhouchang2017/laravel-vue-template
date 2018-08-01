@@ -11,11 +11,13 @@
         "dingo/api": "2.0.0-alpha1",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "~6.0",
+        "intervention/image": "^2.4",
         "kalnoy/nestedset": "^4.3",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
         "spatie/laravel-permission": "^2.12",
-        "tymon/jwt-auth": "1.0.0-rc.2"
+        "tymon/jwt-auth": "1.0.0-rc.2",
+        "zgldh/qiniu-laravel-storage": "^0.9.2"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

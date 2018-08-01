@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2018-07-23 10:13:35.
+    * Generated on 2018-08-01 17:52:30.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -60,6 +60,7 @@ namespace PHPSTORM_META {
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
         'Dingo\Api\Console\Command\Docs' => \Dingo\Api\Console\Command\Docs::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
+        'image' => \Intervention\Image\ImageManager::class,
         'tymon.jwt.provider.jwt.namshi' => \Tymon\JWTAuth\Providers\JWT\Namshi::class,
         'tymon.jwt.provider.jwt.lcobucci' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
         'tymon.jwt.provider.jwt' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
@@ -232,6 +233,7 @@ namespace PHPSTORM_META {
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
         'Dingo\Api\Console\Command\Docs' => \Dingo\Api\Console\Command\Docs::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
+        'image' => \Intervention\Image\ImageManager::class,
         'tymon.jwt.provider.jwt.namshi' => \Tymon\JWTAuth\Providers\JWT\Namshi::class,
         'tymon.jwt.provider.jwt.lcobucci' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
         'tymon.jwt.provider.jwt' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
@@ -404,6 +406,7 @@ namespace PHPSTORM_META {
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
         'Dingo\Api\Console\Command\Docs' => \Dingo\Api\Console\Command\Docs::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
+        'image' => \Intervention\Image\ImageManager::class,
         'tymon.jwt.provider.jwt.namshi' => \Tymon\JWTAuth\Providers\JWT\Namshi::class,
         'tymon.jwt.provider.jwt.lcobucci' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
         'tymon.jwt.provider.jwt' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
@@ -576,6 +579,7 @@ namespace PHPSTORM_META {
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
         'Dingo\Api\Console\Command\Docs' => \Dingo\Api\Console\Command\Docs::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
+        'image' => \Intervention\Image\ImageManager::class,
         'tymon.jwt.provider.jwt.namshi' => \Tymon\JWTAuth\Providers\JWT\Namshi::class,
         'tymon.jwt.provider.jwt.lcobucci' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
         'tymon.jwt.provider.jwt' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
@@ -748,6 +752,7 @@ namespace PHPSTORM_META {
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
         'Dingo\Api\Console\Command\Docs' => \Dingo\Api\Console\Command\Docs::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
+        'image' => \Intervention\Image\ImageManager::class,
         'tymon.jwt.provider.jwt.namshi' => \Tymon\JWTAuth\Providers\JWT\Namshi::class,
         'tymon.jwt.provider.jwt.lcobucci' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
         'tymon.jwt.provider.jwt' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
@@ -920,6 +925,7 @@ namespace PHPSTORM_META {
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
         'Dingo\Api\Console\Command\Docs' => \Dingo\Api\Console\Command\Docs::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
+        'image' => \Intervention\Image\ImageManager::class,
         'tymon.jwt.provider.jwt.namshi' => \Tymon\JWTAuth\Providers\JWT\Namshi::class,
         'tymon.jwt.provider.jwt.lcobucci' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
         'tymon.jwt.provider.jwt' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
@@ -1092,6 +1098,7 @@ namespace PHPSTORM_META {
         'api.transformer' => \Dingo\Api\Transformer\Factory::class,
         'Dingo\Api\Console\Command\Docs' => \Dingo\Api\Console\Command\Docs::class,
         'api.router.adapter' => \Dingo\Api\Routing\Adapter\Laravel::class,
+        'image' => \Intervention\Image\ImageManager::class,
         'tymon.jwt.provider.jwt.namshi' => \Tymon\JWTAuth\Providers\JWT\Namshi::class,
         'tymon.jwt.provider.jwt.lcobucci' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
         'tymon.jwt.provider.jwt' => \Tymon\JWTAuth\Providers\JWT\Lcobucci::class,

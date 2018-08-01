@@ -2,7 +2,7 @@
 
 namespace App\Modules\Scaffold\Models;
 
-use App\Modules\Scaffold\BaseModel;
+use App\Modules\Scaffold\BaseModel as Model;
 
 
 /**
@@ -10,7 +10,7 @@ use App\Modules\Scaffold\BaseModel;
  * Class Address
  * @package App\Models
  */
-class Address extends BaseModel
+class Address extends Model
 {
     protected $fillable = [
         'name',

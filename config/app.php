@@ -160,7 +160,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Mws\Support\MwsServiceProvider::class
+        Mws\Support\MwsServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class
+
 
     ],
 
@@ -213,6 +215,7 @@ return [
         'Mws' => Mws\Support\MwsFacade::class,
         'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];
