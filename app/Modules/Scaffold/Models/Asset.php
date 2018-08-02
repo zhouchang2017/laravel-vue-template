@@ -10,8 +10,9 @@ class Asset extends Model
         'path',
         'url',
         'height',
-        'weight',
-        'size'
+        'width',
+        'size',
+        'type'
     ];
 
     public function assetable()
