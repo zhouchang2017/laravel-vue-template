@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: z
- * Date: 2018/8/1
- * Time: 3:55 PM
- */
 
 namespace App\Modules\Scaffold\Services;
 
@@ -28,6 +22,8 @@ class AssetService extends BaseService
 
     protected $thumb;
 
+    protected $img;
+
     /**
      * AssetService constructor.
      * @param $model
@@ -40,16 +36,21 @@ class AssetService extends BaseService
     public function save()
     {
         $file = current(request()->file());
-        $path = $file->store(request('path'),'public');
+        $path = $file->store(request('path'), 'public');
         $url = Storage::url($path);
         return $url;
     }
 
     private function readImage($path)
     {
-        $realPath = storage_path('app/public').'/'.$path;
-        $img = Image::make($realPath);
-
-        dd($img);
+        $realPath = public_path() . $path;
+        $this->img = Image::make($realPath);
+        return $this;
     }
+
+    public function createThumb()
+    {
+        dd(1);
+    }
+
 }

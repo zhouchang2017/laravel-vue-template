@@ -16,7 +16,6 @@ class CreateProductTables extends Migration
         Schema::create('brands',function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment('品牌名称');
-            $table->string('avatar')->nullable()->comment('品牌LOGO');
             $table->string('description')->nullable()->comment('品牌描述');
             $table->timestamps();
         });

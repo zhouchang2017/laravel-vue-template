@@ -26,7 +26,7 @@ class CreateAttributeTables extends Migration
             $table->boolean('variant')->default(false)->comment('是否为销售属性');
             $table->enum(
                 'type',
-                ['text', 'textarea', 'select', 'radio', 'richtext', 'checkbox', 'date', 'time', 'checkbox_group', 'radio_group', 'toggle']
+                ['text', 'textarea','file', 'select', 'radio', 'richtext', 'checkbox', 'date', 'time', 'checkbox_group', 'radio_group', 'toggle']
             )->default('text');
 
             $table->boolean('required')->default(false)->comment('是否必填');

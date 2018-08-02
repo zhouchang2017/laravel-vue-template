@@ -8,6 +8,10 @@ class AssetController extends Controller
 {
     public function upload(AssetService $assetService)
     {
-        return $assetService->save();
+        return response()->json([
+            'data'=>[
+                'url'=>$assetService->save(),
+            ]
+        ]);
     }
 }
