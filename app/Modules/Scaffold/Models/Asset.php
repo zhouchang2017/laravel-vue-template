@@ -15,6 +15,10 @@ class Asset extends Model
         'type'
     ];
 
+    protected $hidden =[
+      'path'
+    ];
+
     public function assetable()
     {
         return $this->morphTo();

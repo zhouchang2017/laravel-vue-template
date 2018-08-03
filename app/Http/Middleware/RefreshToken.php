@@ -42,4 +42,24 @@ class RefreshToken extends BaseMiddleware
         // 在响应头中返回新的 token
         return $this->setAuthenticationHeader($next($request), $token);
     }
+
+
+
+    /**
+     * Set the authentication header.
+     *
+     * @param  \Illuminate\Http\Response|\Illuminate\Http\JsonResponse  $response
+     * @param  string|null  $token
+     *
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     */
+    protected function setAuthenticationHeader($response, $token = null)
+    {
+        $token = $token ?: $this->auth->refresh();
+
+        $response->headers->set('Authorization', 'Bearer '.$token);
+
+        $response->cookie('app-token','Bearer '.$token,config('jwt.refresh_ttl'));
+        return $response;
+    }
 }

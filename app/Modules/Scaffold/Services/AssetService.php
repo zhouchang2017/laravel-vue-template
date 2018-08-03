@@ -92,7 +92,7 @@ class AssetService extends BaseService
         return $this->getStorageUrl(self::THUMB_PREFIX . $this->current['name'] . '.' . $this->current['extension']);
     }
 
-    public function store(array $paths, Closure $relationModel)
+    public function store(array $paths)
     {
         if (count($paths) > 0) {
             $options = collect($paths)->reduce(function ($res ,$path) {
@@ -102,7 +102,8 @@ class AssetService extends BaseService
                 array_push($res,$this->storeOriginalConfig());
                 return $res;
             },[]);
-            return call_user_func($relationModel,$options);
+            return $options;
+            // call_user_func($relationModel,$options);
         }
     }
 

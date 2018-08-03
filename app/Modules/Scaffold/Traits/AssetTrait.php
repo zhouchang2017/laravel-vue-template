@@ -5,13 +5,15 @@ namespace App\Modules\Scaffold\Traits;
 
 
 use App\Modules\Scaffold\Services\AssetService;
+use Closure;
 
 trait AssetTrait
 {
-    public function createAsset(string $key)
+    public function storeAsset(string $key, Closure $closure)
     {
-        if(request($key)){
-            app(AssetService::class);
+        if (request($key) && count(request($key)) > 0) {
+            $options = app(AssetService::class)->store(request($key));
+            call_user_func($closure,$options);
         }
     }
 }
