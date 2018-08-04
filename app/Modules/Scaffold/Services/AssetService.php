@@ -5,19 +5,32 @@ namespace App\Modules\Scaffold\Services;
 
 use App\Modules\Scaffold\BaseService;
 use App\Modules\Scaffold\Models\Asset;
+use Illuminate\Http\FileHelpers;
 use Intervention\Image\ImageManagerStatic as Image;
 use Storage;
+use File;
 
 class AssetService extends BaseService
 {
+    use FileHelpers;
+
     const THUMB_PREFIX = 'thumb_';
 
     const THUMB_SIZE = 200;
+
     protected $defaultStorePath;
+
+    protected $basename;
+
+    protected $dirName;
 
     protected $model;
 
+    protected $thumbSavePath;
+
     protected $fullPath;
+
+    protected $fileName;
 
     protected $url;
 
@@ -43,20 +56,40 @@ class AssetService extends BaseService
     public function __construct(Asset $model)
     {
         $this->model = $model;
-        $this->defaultStorePath = storage_path('app/public');
+        $this->defaultStorePath = config('filesystems.disks.public.root');
     }
 
-    public function save()
+    public function save($dirName = 'app')
+    {
+        /** @var \Illuminate\Http\UploadedFile $file */
+        $file = $this->handleFile($dirName);
+        $path = $file->store($dirName, 'public');
+        $this->basename = File::basename($path);
+
+        $this->handleThumb($dirName, $this->basename);
+        return [
+            'src'=>$this->getStorageUrl($path),
+            'thumb'=>$this->getStorageUrl($this->thumbSavePath)
+        ];
+    }
+
+    private function handleThumb($dirname,$baseName)
+    {
+        $this->img->fit(self::THUMB_SIZE)->save($this->getThumbSavePath($dirname,$baseName));
+    }
+
+    private function getThumbName($baseName): string
+    {
+        return self::THUMB_PREFIX . $baseName;
+    }
+
+    private function handleFile($dirName)
     {
         /** @var \Illuminate\Http\UploadedFile $file */
         $file = current(request()->file());
         $this->setImage($file);
-        $path = $file->store(request('path'), 'public');
-
-        $this->fullPath = Storage::path($path);
-
-        $url = $this->getStorageUrl($path);
-        return $url;
+        $this->dirName = $dirName;
+        return $file;
     }
 
     private function getStorageUrl($path)
@@ -73,6 +106,7 @@ class AssetService extends BaseService
         $this->img = Image::make($source);
         return $this;
     }
+
     private function readImage($path)
     {
         $this->current = [];
@@ -84,24 +118,26 @@ class AssetService extends BaseService
 
     private function saveImageExif()
     {
-        $this->current = array_merge($this->current,[
+        $this->current = array_merge($this->current, [
             'extension' => $this->img->extension,
-            'name'      => $this->img->filename,
-            'size'      => $this->img->filesize(),
-            'path'      => $this->img->dirname.'/'.$this->img->basename,
-            'height'    =>$this->img->getHeight(),
-            'width'     =>$this->img->getWidth()
+            'name' => $this->img->filename,
+            'size' => $this->img->filesize(),
+            'path' => $this->img->dirname . '/' . $this->img->basename,
+            'height' => $this->img->getHeight(),
+            'width' => $this->img->getWidth(),
         ]);
     }
 
-    private function saveThumb():void
+    private function saveThumb(): void
     {
         $this->img->fit(self::THUMB_SIZE)->save($this->getThumbSavePath());
     }
 
-    private function getThumbSavePath()
+    private function getThumbSavePath($dirname,$baseName)
     {
-        return $this->defaultStorePath . '/' . self::THUMB_PREFIX . $this->current['name'] . '.' . $this->current['extension'];
+        $this->thumbSavePath = $dirname . '/' . $this->getThumbName($baseName);
+        $thumbSavePath = $this->defaultStorePath . '/' . $dirname . '/' . $this->getThumbName($baseName);
+        return $thumbSavePath;
     }
 
     private function getThumbStorageUrl()
@@ -109,16 +145,16 @@ class AssetService extends BaseService
         return $this->getStorageUrl(self::THUMB_PREFIX . $this->current['name'] . '.' . $this->current['extension']);
     }
 
-    public function store(array $paths)
+    public function store(array $key)
     {
-        if (count($paths) > 0) {
-            $options = collect($paths)->reduce(function ($res ,$path) {
+        if (count($key) > 0) {
+            $options = collect($key)->reduce(function ($res, $img) {
                 $this->readImage($path)->saveImageExif();
                 $this->saveThumb();
-                array_push($res,$this->storeThumbConfig());
-                array_push($res,$this->storeOriginalConfig());
+                array_push($res, $this->storeThumbConfig());
+                array_push($res, $this->storeOriginalConfig());
                 return $res;
-            },[]);
+            }, []);
             return $options;
             // call_user_func($relationModel,$options);
         }
@@ -128,27 +164,28 @@ class AssetService extends BaseService
     {
         return [
             $this->storeThumbConfig(),
-            $this->storeOriginalConfig()
+            $this->storeOriginalConfig(),
         ];
     }
 
     private function storeThumbConfig()
     {
         return [
-            'path'   => $this->getThumbSavePath(),
-            'url'    => $this->getThumbStorageUrl(),
+            'path' => $this->getThumbSavePath(),
+            'url' => $this->getThumbStorageUrl(),
             'height' => 200,
-            'width'  => 200,
-            'size'   => null,
-            'type'   => 'thumb',
+            'width' => 200,
+            'size' => null,
+            'type' => 'thumb',
         ];
     }
 
     private function storeOriginalConfig()
     {
         return array_merge([
-            'type'   => 'origin',
-        ],array_except($this->current,['extension','name']));
+            'type' => 'origin',
+        ], array_except($this->current, ['extension', 'name']));
     }
+
 
 }
