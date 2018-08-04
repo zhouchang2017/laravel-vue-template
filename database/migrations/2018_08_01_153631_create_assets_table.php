@@ -21,6 +21,7 @@ class CreateAssetsTable extends Migration
             $table->unsignedInteger('width')->nullable()->comment('宽度');
             $table->string('size')->nullable()->comment('图片尺寸');
             $table->string('type')->nullable()->comment('资源类型');
+            $table->json('thumb')->nullable()->comment('缩略图');
             $table->morphs('assetable');
             $table->timestamps();
             $table->softDeletes();

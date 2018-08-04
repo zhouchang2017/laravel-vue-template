@@ -7,14 +7,17 @@ use App\Modules\Scaffold\BaseService;
 use App\Modules\Scaffold\Models\Asset;
 use Intervention\Image\ImageManagerStatic as Image;
 use Storage;
-use Closure;
 
 class AssetService extends BaseService
 {
     const THUMB_PREFIX = 'thumb_';
+
+    const THUMB_SIZE = 200;
     protected $defaultStorePath;
 
     protected $model;
+
+    protected $fullPath;
 
     protected $url;
 
@@ -45,8 +48,13 @@ class AssetService extends BaseService
 
     public function save()
     {
+        /** @var \Illuminate\Http\UploadedFile $file */
         $file = current(request()->file());
+        $this->setImage($file);
         $path = $file->store(request('path'), 'public');
+
+        $this->fullPath = Storage::path($path);
+
         $url = $this->getStorageUrl($path);
         return $url;
     }
@@ -56,6 +64,15 @@ class AssetService extends BaseService
         return Storage::url($path);
     }
 
+    /**
+     * @param $source
+     * @return $this
+     */
+    private function setImage($source)
+    {
+        $this->img = Image::make($source);
+        return $this;
+    }
     private function readImage($path)
     {
         $this->current = [];
@@ -79,7 +96,7 @@ class AssetService extends BaseService
 
     private function saveThumb():void
     {
-        $this->img->fit(200)->save($this->getThumbSavePath());
+        $this->img->fit(self::THUMB_SIZE)->save($this->getThumbSavePath());
     }
 
     private function getThumbSavePath()

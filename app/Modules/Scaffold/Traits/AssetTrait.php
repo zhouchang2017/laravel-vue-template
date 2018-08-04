@@ -16,4 +16,6 @@ trait AssetTrait
             call_user_func($closure,$options);
         }
     }
+
+
 }
