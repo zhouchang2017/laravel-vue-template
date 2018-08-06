@@ -4,16 +4,22 @@
 namespace App\Modules\Scaffold\Traits;
 
 
+use App\Modules\Scaffold\Contracts\AssetRelation;
 use App\Modules\Scaffold\Services\AssetService;
-use Closure;
 
 trait AssetTrait
 {
-    public function storeAsset(string $key, Closure $closure)
+    public function storeAsset(AssetRelation $model,string $key)
     {
         if (request($key) && count(request($key)) > 0) {
-            $options = app(AssetService::class)->store(request($key));
-            call_user_func($closure,$options);
+            return app(AssetService::class)->store($model,request($key));
+        }
+    }
+
+    public function updateAsset(AssetRelation $model,string $key)
+    {
+        if (request($key) && count(request($key)) > 0) {
+            return app(AssetService::class)->update($model,request($key));
         }
     }
 

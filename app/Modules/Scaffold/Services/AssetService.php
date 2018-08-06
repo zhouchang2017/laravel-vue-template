@@ -4,8 +4,12 @@ namespace App\Modules\Scaffold\Services;
 
 
 use App\Modules\Scaffold\BaseService;
+use App\Modules\Scaffold\Contracts\AssetRelation;
 use App\Modules\Scaffold\Models\Asset;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\FileHelpers;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 use Storage;
 use File;
@@ -47,8 +51,6 @@ class AssetService extends BaseService
      */
     protected $img;
 
-    private $current;
-
     /**
      * AssetService constructor.
      * @param $model
@@ -68,14 +70,14 @@ class AssetService extends BaseService
 
         $this->handleThumb($dirName, $this->basename);
         return [
-            'src'=>$this->getStorageUrl($path),
-            'thumb'=>$this->getStorageUrl($this->thumbSavePath)
+            'src' => $this->getStorageUrl($path),
+            'thumb' => $this->getStorageUrl($this->thumbSavePath),
         ];
     }
 
-    private function handleThumb($dirname,$baseName)
+    private function handleThumb($dirname, $baseName)
     {
-        $this->img->fit(self::THUMB_SIZE)->save($this->getThumbSavePath($dirname,$baseName));
+        $this->img->fit(self::THUMB_SIZE)->save($this->getThumbSavePath($dirname, $baseName));
     }
 
     private function getThumbName($baseName): string
@@ -107,84 +109,93 @@ class AssetService extends BaseService
         return $this;
     }
 
-    private function readImage($path)
-    {
-        $this->current = [];
-        $this->current['url'] = $path;
-        $realPath = public_path() . $path;
-        $this->img = Image::make($realPath);
-        return $this;
-    }
 
-    private function saveImageExif()
-    {
-        $this->current = array_merge($this->current, [
-            'extension' => $this->img->extension,
-            'name' => $this->img->filename,
-            'size' => $this->img->filesize(),
-            'path' => $this->img->dirname . '/' . $this->img->basename,
-            'height' => $this->img->getHeight(),
-            'width' => $this->img->getWidth(),
-        ]);
-    }
-
-    private function saveThumb(): void
-    {
-        $this->img->fit(self::THUMB_SIZE)->save($this->getThumbSavePath());
-    }
-
-    private function getThumbSavePath($dirname,$baseName)
+    private function getThumbSavePath($dirname, $baseName)
     {
         $this->thumbSavePath = $dirname . '/' . $this->getThumbName($baseName);
         $thumbSavePath = $this->defaultStorePath . '/' . $dirname . '/' . $this->getThumbName($baseName);
         return $thumbSavePath;
     }
 
-    private function getThumbStorageUrl()
+
+    public function store(AssetRelation $model, array $images)
     {
-        return $this->getStorageUrl(self::THUMB_PREFIX . $this->current['name'] . '.' . $this->current['extension']);
+        $options = collect($images)->reduce(function ($res, $img) {
+            $src = $this->getImageExif($img['src']);
+            $src['thumb'] = $this->getImageExif($img['thumb']);
+            array_push($res, $src);
+            return $res;
+        }, []);
+        return $this->callTargetRelation($model)->createMany($options);
     }
 
-    public function store(array $key)
+    public function update(AssetRelation $model, array $images)
     {
-        if (count($key) > 0) {
-            $options = collect($key)->reduce(function ($res, $img) {
-                $this->readImage($path)->saveImageExif();
-                $this->saveThumb();
-                array_push($res, $this->storeThumbConfig());
-                array_push($res, $this->storeOriginalConfig());
-                return $res;
-            }, []);
-            return $options;
-            // call_user_func($relationModel,$options);
-        }
+        $change = $this->calcUpdateChange($model, $images);
+        count($change['created']) > 0 && $this->store($model, $change['created']);
+        $this->destroyAsset($change['deleted']);
     }
 
-    private function getStoreConfig()
+    private function destroyAsset(Collection $assets)
     {
+        $assets->map(function(Asset $asset){
+            $asset->delete();
+        });
+    }
+
+    private function calcUpdateChange(AssetRelation $model, array $images)
+    {
+        $assets = $this->callTargetRelation($model)->get();
+        $init = [
+            'updated' => [],
+            'created' => [],
+            'deleted' => [],
+        ];
+        $ids = array_filter(array_pluck($images,'id'));
+
+        $init['deleted'] = $assets->filter(function($item) use ($ids){
+           return !in_array($item->id,$ids);
+        });
+        return collect($images)->reduce(function ($res, $image) use ($assets) {
+            if (array_key_exists('id', $image)) {
+
+                if ($asset = $assets->where('id', $image['id'])->first()) {
+                    if ($asset->url !== $image['src']) {
+                        // update
+                        $res['updated'][] = $image;
+                    }
+                }
+            } else {
+                // create
+                $res['created'][] = $image;
+            }
+            return $res;
+        }, $init);
+    }
+
+    private function callTargetRelation(AssetRelation $model): MorphMany
+    {
+        return call_user_func([$model, $model->getAssetMethod()]);
+    }
+
+    private function getImageExif($src)
+    {
+        $fullPath = $this->getSourcePath($src);
+        $this->setImage($fullPath);
         return [
-            $this->storeThumbConfig(),
-            $this->storeOriginalConfig(),
+            'url' => $src,
+            'type' => $this->img->extension,
+            'size' => $this->img->filesize(),
+            'path' => $fullPath,
+            'height' => $this->img->getHeight(),
+            'width' => $this->img->getWidth(),
         ];
     }
 
-    private function storeThumbConfig()
+    private function getSourcePath($path)
     {
-        return [
-            'path' => $this->getThumbSavePath(),
-            'url' => $this->getThumbStorageUrl(),
-            'height' => 200,
-            'width' => 200,
-            'size' => null,
-            'type' => 'thumb',
-        ];
-    }
-
-    private function storeOriginalConfig()
-    {
-        return array_merge([
-            'type' => 'origin',
-        ], array_except($this->current, ['extension', 'name']));
+        $path = Str::replaceFirst('/storage/', '/', $path);
+        return $this->defaultStorePath . $path;
     }
 
 

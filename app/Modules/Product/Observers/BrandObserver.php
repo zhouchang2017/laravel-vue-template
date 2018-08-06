@@ -12,14 +12,12 @@ class BrandObserver
 
     public function created(Brand $brand)
     {
-        $this->storeAsset('avatar', function ($options) use ($brand) {
-            $brand->images()->createMany($options);
-        });
+        $this->storeAsset($brand,'avatars');
     }
 
     public function afterUpdate(Brand $brand)
     {
-
+        $this->updateAsset($brand,'avatars');
     }
 
 }

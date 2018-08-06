@@ -12,7 +12,8 @@ class Asset extends Model
         'height',
         'width',
         'size',
-        'type'
+        'type',
+        'thumb',
     ];
 
     /**
@@ -21,12 +22,18 @@ class Asset extends Model
      * @var array
      */
     protected $casts = [
-        'thumb' => 'array'
+        'thumb' => 'array',
     ];
 
-    protected $hidden =[
-      'path'
+    protected $hidden = [
+        'path',
     ];
+
+    public function getThumbAttribute($value)
+    {
+
+        return $value ? array_except(json_decode($value, true), ['path']) : null;
+    }
 
     public function assetable()
     {

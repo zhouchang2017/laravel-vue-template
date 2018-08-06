@@ -8,7 +8,7 @@ use App\Modules\Scaffold\Transformers\AssetTransformer;
 
 class BrandTransformer extends Transformer
 {
-    protected $availableIncludes = [ 'images' ];
+    protected $availableIncludes = ['avatars'];
 
     public function __construct($field = null)
     {
@@ -21,9 +21,9 @@ class BrandTransformer extends Transformer
         return $brand->attributesToArray();
     }
 
-    public function includeImages(Brand $brand)
+    public function includeAvatars(Brand $brand)
     {
-        return $this->collection($brand->images,new AssetTransformer());
+        return $this->collection($brand->avatars, new AssetTransformer());
     }
 
 

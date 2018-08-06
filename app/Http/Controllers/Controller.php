@@ -148,8 +148,8 @@ class Controller extends BaseController
     {
         $request = $this->getRequest(__FUNCTION__);
         $this->setModel($this->model::create($request->all()));
-//        return $this->response->item($this->model, new $this->transformer())->setStatusCode(201);
-        return $this->response->created();
+        return $this->response->item($this->model, new $this->transformer())->setStatusCode(201);
+//        return $this->response->created($this->model->id);
     }
 
 
