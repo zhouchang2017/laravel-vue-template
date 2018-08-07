@@ -26,7 +26,7 @@ class AttributeGroupObserver
             $willDestroyIds = array_diff($attributes,array_pluck(request()->input('attributes'),'id'));
             Attribute::destroy($willDestroyIds);
             collect(request()->input('attributes'))->map(function($attribute)use ($attributeGroup){
-                $attributeGroup->values()->updateOrCreate($attribute);
+                $attributeGroup->values()->updateOrCreate(array_except($attribute,['variant']));
             });
         }
     }
