@@ -59,4 +59,10 @@ class CategoryController extends Controller
 
         return $this->response->noContent();
     }
+
+    public function tree()
+    {
+        $nodes = $this->model::get()->toTree();
+        return response()->json(['data'=>$nodes]);
+    }
 }

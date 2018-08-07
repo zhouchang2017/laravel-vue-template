@@ -73,8 +73,12 @@ $api->version('v2', [
     $api->resource('attributes','AttributeController');
     // 产品
     $api->resource('products','ProductController');
+    // 树状结构输出
+    $api->get('categories/tree','CategoryController@tree');
     // 产品分类
     $api->resource('categories','CategoryController');
+
+
     // 产品分类关联产品
     $api->post('categories/{id}/products','CategoryController@products');
 
