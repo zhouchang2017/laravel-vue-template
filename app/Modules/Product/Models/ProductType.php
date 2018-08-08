@@ -2,15 +2,16 @@
 
 namespace App\Modules\Product\Models;
 
-
 use App\Modules\Product\Observers\ProductTypeObserver;
 use App\Modules\Scaffold\BaseModel as Model;
+
 class ProductType extends Model
 {
-    protected $fillable = ['name','config'];
+    protected $fillable = ['name', 'config'];
+
     protected $fieldSearchable = [
         'id',
-        'name'
+        'name',
     ];
     /**
      * 应该被转换成原生类型的属性。
@@ -35,7 +36,7 @@ class ProductType extends Model
 
     public function attributeGroups()
     {
-        return $this->belongsToMany(AttributeGroup::class,'product_type_attribute_group','type_id','group_id');
+        return $this->belongsToMany(AttributeGroup::class, 'product_type_attribute_group', 'type_id', 'group_id');
     }
 
 }

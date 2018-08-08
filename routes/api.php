@@ -51,6 +51,7 @@ $api->version('v1', [
 
 $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
+//    'middleware'=>'api'
     'middleware'=>'refresh.token'
 ], function ($api) {
     $api->get('refresh','Auth\AuthController@refresh')->name('refresh');
