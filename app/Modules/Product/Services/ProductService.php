@@ -187,6 +187,7 @@ class ProductService extends BaseService
             && $this->createProductVariant(request('variants'));
 
             DB::commit();
+            return $this->product;
         }catch (\Exception $exception){
             DB::rollBack();
             Log::error('创建产品失败');

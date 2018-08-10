@@ -20,8 +20,8 @@ class ProductController extends Controller
      */
     public function store()
     {
-        app(ProductService::class)->create(request()->all());
-        return $this->response->created();
+        $product = app(ProductService::class)->create(request()->all());
+        return $this->response->item($product, new $this->transformer())->setStatusCode(201);
     }
 
     public function update($id)

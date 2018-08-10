@@ -4,10 +4,11 @@ namespace App\Modules\Product\Transformers;
 
 use App\Modules\Scaffold\Transformer;
 use App\Modules\Product\Models\Product;
+use App\Modules\Scaffold\Transformers\AssetTransformer;
 
 class ProductTransformer extends Transformer
 {
-    protected $availableIncludes = ['brand', 'type', 'attributes', 'variants', 'categories'];
+    protected $availableIncludes = ['brand', 'type', 'attributes', 'variants', 'categories','avatars'];
 
     public function __construct($field = null)
     {
@@ -43,6 +44,11 @@ class ProductTransformer extends Transformer
     public function includeCategories(Product $product)
     {
         return $this->collection($product->categories, new CategoryTransformer());
+    }
+
+    public function includeAvatars(Product $product)
+    {
+        return $this->collection($product->avatars, new AssetTransformer());
     }
 
 

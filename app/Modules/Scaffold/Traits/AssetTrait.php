@@ -1,26 +1,49 @@
 <?php
 
-
 namespace App\Modules\Scaffold\Traits;
 
 
 use App\Modules\Scaffold\Contracts\AssetRelation;
+use App\Modules\Scaffold\Models\Asset;
 use App\Modules\Scaffold\Services\AssetService;
+use Dingo\Api\Exception\StoreResourceFailedException;
 
 trait AssetTrait
 {
-    public function storeAsset(AssetRelation $model,string $key)
+
+    /**
+     * @return string
+     */
+    public function getAssetMethod(): string
     {
-        if (request($key) && count(request($key)) > 0) {
-            return app(AssetService::class)->store($model,request($key));
-        }
+        return 'avatars';
     }
 
-    public function updateAsset(AssetRelation $model,string $key)
+    public function avatars()
     {
-        if (request($key) && count(request($key)) > 0) {
-            return app(AssetService::class)->update($model,request($key));
+        return $this->morphMany(Asset::class, 'assetable');
+    }
+
+
+    public function storeAsset(string $key)
+    {
+        if ($this instanceof AssetRelation) {
+            if (request($key) && count(request($key)) > 0) {
+                return app(AssetService::class)->store($this, request($key));
+            }
         }
+        throw new StoreResourceFailedException('model is not instanceof AssetRelation');
+    }
+
+
+    public function updateAsset(string $key)
+    {
+        if ($this instanceof AssetRelation) {
+            if (request($key) && count(request($key)) > 0) {
+                return app(AssetService::class)->update($this, request($key));
+            }
+        }
+        throw new StoreResourceFailedException('model is not instanceof AssetRelation');
     }
 
 

@@ -5,18 +5,13 @@ namespace App\Modules\Product\Models;
 use App\Modules\Product\Observers\BrandObserver;
 use App\Modules\Scaffold\BaseModel as Model;
 use App\Modules\Scaffold\Contracts\AssetRelation;
-use App\Modules\Scaffold\Models\Asset;
+use App\Modules\Scaffold\Traits\AssetTrait;
 
 class Brand extends Model implements AssetRelation
 {
+    use AssetTrait;
+
     protected $fillable=['name','description'];
-    /**
-     * @return string
-     */
-    public function getAssetMethod(): string
-    {
-        return 'avatars';
-    }
     /**
      * 数据模型的启动方法
      *
@@ -33,8 +28,4 @@ class Brand extends Model implements AssetRelation
         return $this->hasMany(Product::class);
     }
 
-    public function avatars()
-    {
-        return $this->morphMany(Asset::class,'assetable');
-    }
 }

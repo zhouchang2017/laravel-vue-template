@@ -51,15 +51,16 @@ $api->version('v1', [
 
 $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
-//    'middleware'=>'api'
-    'middleware'=>'refresh.token'
+    'middleware'=>'api'
+//    'middleware'=>'refresh.token'
 ], function ($api) {
     $api->get('refresh','Auth\AuthController@refresh')->name('refresh');
 });
 
 $api->version('v2', [
     'namespace' => 'App\Http\Controllers\Api\V2',
-    'middleware'=>['refresh.token'],
+    'middleware'=>'api',
+//    'middleware'=>['refresh.token'],
 ], function ($api) {
 
     $api->get('me','UserController@me');

@@ -3,8 +3,10 @@
 namespace App\Modules\Product\Models;
 
 
-//use App\Modules\Product\Observers\ProductObserver;
+use App\Modules\Product\Observers\ProductObserver;
 use App\Modules\Scaffold\BaseModel as Model;
+use App\Modules\Scaffold\Contracts\AssetRelation;
+use App\Modules\Scaffold\Traits\AssetTrait;
 use Illuminate\Support\Collection;
 use Log;
 
@@ -13,8 +15,9 @@ use Log;
  * @property mixed variants
  * @package App\Models
  */
-class Product extends Model
+class Product extends Model implements AssetRelation
 {
+    use AssetTrait;
     /**
      * @var array
      */
@@ -50,7 +53,7 @@ class Product extends Model
     {
         parent::boot();
 
-//        self::observe(ProductProviderObserver::class);
+        self::observe(ProductObserver::class);
     }
 
     /**
@@ -89,7 +92,6 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class, 'product_categories');
     }
-
 
     /**
      * 返回该产品下的所有供应商
