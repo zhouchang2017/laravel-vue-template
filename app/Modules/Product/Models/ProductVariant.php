@@ -12,6 +12,7 @@ class ProductVariant extends Model
         'sku',
         'options',
         'price',
+        'attribute_key'
     ];
 
     /**

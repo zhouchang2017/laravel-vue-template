@@ -74,6 +74,7 @@ class CreateProductTables extends Migration
             $table->increments('id');
             $table->unsignedInteger('product_id')->nullable();
             $table->string('sku')->unique();
+            $table->string('attribute_key')->comment('变体属性标记');
             $table->json('options')->nullable();
             $table->unsignedInteger('price')->default(0);
 //            $table->integer('stock')->unsigned()->default(0);

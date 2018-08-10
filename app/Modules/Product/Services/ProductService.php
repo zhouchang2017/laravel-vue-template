@@ -232,7 +232,7 @@ class ProductService extends BaseService
         $attributes = collect($attributes);
         return $attributes->map(function ($variant) {
             /** @var ProductVariant $variantInstance */
-            $variantInstance = $this->product->variants()->create(array_only($variant, [ 'price', 'sku' ]));
+            $variantInstance = $this->product->variants()->create(array_only($variant, [ 'price', 'sku','attribute_key' ]));
             // 关联供应商
 //            if (array_key_exists('providers', $variant)) {
 //                $variantInstance->providers()->sync($variant['providers']);
