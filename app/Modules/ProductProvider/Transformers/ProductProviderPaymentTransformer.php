@@ -7,7 +7,7 @@ use App\Modules\Scaffold\Transformer;
 
 class ProductProviderPaymentTransformer extends Transformer
 {
-    protected $availableIncludes = [  ];
+    protected $availableIncludes = [ 'payment','balance' ];
 
     public function __construct($field = null)
     {
@@ -18,6 +18,16 @@ class ProductProviderPaymentTransformer extends Transformer
     {
         $this->hidden && $payment->addHidden($this->hidden);
         return $payment->attributesToArray();
+    }
+
+    public function includeBalance(ProductProviderPayment $payment)
+    {
+        return $this->item($payment->balance, new BalanceTransformer());
+    }
+
+    public function includePayment(ProductProviderPayment $payment)
+    {
+        return $this->item($payment->payment, new PaymentTransformer());
     }
 
 
