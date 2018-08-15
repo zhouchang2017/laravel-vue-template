@@ -89,6 +89,10 @@ $api->version('v2', [
     $api->post('categories/{id}/products/detach','CategoryController@detachProducts');
     // 产品供应商
     $api->resource('product_providers','ProductProviderController');
+    // 附加产品
+    $api->post('product_providers/{id}/products/attach','ProductProviderController@attachProducts');
+    // 分离产品
+    $api->post('product_providers/{id}/products/detach','ProductProviderController@detachProducts');
     // 产品供应商关联产品
     $api->post('product_providers/{id}/products','ProductProviderController@products');
 

@@ -2,22 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\DataType\Address;
-use App\Services\DataType\CreateInboundShipmentPlanRequest;
-use App\Services\DataType\GetServiceStatusRequest;
+use App\Modules\ProductProvider\Models\ProductProvider;
 use App\Services\FulfillmentInboundShipment;
 use App\Services\Products;
-use xsd2php\Xsd2Php;
 use Illuminate\Http\Request;
-use GuzzleHttp\Psr7\Request as HttpRequest;
-use Mws;
-use Carbon\Carbon;
 
 class TestController extends Controller
 {
     protected $fba;
     protected $products;
-
 
 
     /**
@@ -31,6 +24,11 @@ class TestController extends Controller
 //        $this->products = $products;
     }
 
+    public function test()
+    {
+
+    }
+
     public function index(Request $request)
     {
 //         $address = $request->input('address');
@@ -38,7 +36,7 @@ class TestController extends Controller
 //         dump($addr->toArray());
 //         die();
 //         return $this->fba->getServiceStatus($request);
-$feed = <<<EOD
+        $feed = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <AmazonEnvelope xsi:noNamespaceSchemaLocation="amzn-envelope.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Header>
@@ -73,7 +71,7 @@ EOD;
 
     public function products(Request $request)
     {
-       return $this->products->ListMatchingProducts($request);
+        return $this->products->ListMatchingProducts($request);
     }
 
     public function byAsins(Request $request)
@@ -83,7 +81,7 @@ EOD;
 
     public function xsd(Request $request)
     {
-        $filePath = base_path('amazon_mws/src/Xsd/').'Product.xsd';
+        $filePath = base_path('amazon_mws/src/Xsd/') . 'Product.xsd';
         $xsdClass = new Xsd2Php($filePath);
         $xsdClass->saveClasses(base_path('amazon_mws/src/XsdClass'));
 //        $response = Mws::store('shop1')->getReport($request);
@@ -93,18 +91,16 @@ EOD;
 
     public function download($schema)
     {
-        foreach([ "https://images-na.ssl-images-amazon.com/images/G/01/rainier/help/xsd/release_4_1/", "https://images-na.ssl-images-amazon.com/images/G/01/rainier/help/xsd/release_1_9/" ] as $ns)
-        {
-            $source = @simplexml_load_file($ns.$schema);
+        foreach ([ "https://images-na.ssl-images-amazon.com/images/G/01/rainier/help/xsd/release_4_1/", "https://images-na.ssl-images-amazon.com/images/G/01/rainier/help/xsd/release_1_9/" ] as $ns) {
+            $source = @simplexml_load_file($ns . $schema);
 
-            if($source)
-            {
+            if ($source) {
                 $source->registerXPathNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
 
-                foreach($source->xpath("//xsd:include") as $include)
+                foreach ($source->xpath("//xsd:include") as $include)
                     $this->download($include->attributes()->schemaLocation);
 
-                file_put_contents(base_path('amazon_mws/src/Xsd/').$schema, $source->asXML());
+                file_put_contents(base_path('amazon_mws/src/Xsd/') . $schema, $source->asXML());
                 return true;
             }
         }

@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2018-08-01 17:52:30.
+    * Generated on 2018-08-15 21:45:05.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -40,6 +40,8 @@ namespace PHPSTORM_META {
         'view.finder' => \Illuminate\View\FileViewFinder::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Asm89\Stack\CorsService' => \Asm89\Stack\CorsService::class,
+        'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
+        'command.debugbar.clear' => \Barryvdh\Debugbar\Console\ClearCommand::class,
         'api.router' => \Dingo\Api\Routing\Router::class,
         'Dingo\Api\Routing\ResourceRegistrar' => \Dingo\Api\Routing\ResourceRegistrar::class,
         'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
@@ -213,6 +215,8 @@ namespace PHPSTORM_META {
         'view.finder' => \Illuminate\View\FileViewFinder::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Asm89\Stack\CorsService' => \Asm89\Stack\CorsService::class,
+        'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
+        'command.debugbar.clear' => \Barryvdh\Debugbar\Console\ClearCommand::class,
         'api.router' => \Dingo\Api\Routing\Router::class,
         'Dingo\Api\Routing\ResourceRegistrar' => \Dingo\Api\Routing\ResourceRegistrar::class,
         'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
@@ -386,6 +390,8 @@ namespace PHPSTORM_META {
         'view.finder' => \Illuminate\View\FileViewFinder::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Asm89\Stack\CorsService' => \Asm89\Stack\CorsService::class,
+        'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
+        'command.debugbar.clear' => \Barryvdh\Debugbar\Console\ClearCommand::class,
         'api.router' => \Dingo\Api\Routing\Router::class,
         'Dingo\Api\Routing\ResourceRegistrar' => \Dingo\Api\Routing\ResourceRegistrar::class,
         'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
@@ -559,6 +565,8 @@ namespace PHPSTORM_META {
         'view.finder' => \Illuminate\View\FileViewFinder::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Asm89\Stack\CorsService' => \Asm89\Stack\CorsService::class,
+        'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
+        'command.debugbar.clear' => \Barryvdh\Debugbar\Console\ClearCommand::class,
         'api.router' => \Dingo\Api\Routing\Router::class,
         'Dingo\Api\Routing\ResourceRegistrar' => \Dingo\Api\Routing\ResourceRegistrar::class,
         'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
@@ -732,6 +740,8 @@ namespace PHPSTORM_META {
         'view.finder' => \Illuminate\View\FileViewFinder::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Asm89\Stack\CorsService' => \Asm89\Stack\CorsService::class,
+        'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
+        'command.debugbar.clear' => \Barryvdh\Debugbar\Console\ClearCommand::class,
         'api.router' => \Dingo\Api\Routing\Router::class,
         'Dingo\Api\Routing\ResourceRegistrar' => \Dingo\Api\Routing\ResourceRegistrar::class,
         'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
@@ -905,6 +915,8 @@ namespace PHPSTORM_META {
         'view.finder' => \Illuminate\View\FileViewFinder::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Asm89\Stack\CorsService' => \Asm89\Stack\CorsService::class,
+        'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
+        'command.debugbar.clear' => \Barryvdh\Debugbar\Console\ClearCommand::class,
         'api.router' => \Dingo\Api\Routing\Router::class,
         'Dingo\Api\Routing\ResourceRegistrar' => \Dingo\Api\Routing\ResourceRegistrar::class,
         'api.url' => \Dingo\Api\Routing\UrlGenerator::class,
@@ -1078,6 +1090,8 @@ namespace PHPSTORM_META {
         'view.finder' => \Illuminate\View\FileViewFinder::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'Asm89\Stack\CorsService' => \Asm89\Stack\CorsService::class,
+        'Barryvdh\Debugbar\LaravelDebugbar' => \Barryvdh\Debugbar\LaravelDebugbar::class,
+        'command.debugbar.clear' => \Barryvdh\Debugbar\Console\ClearCommand::class,
         'api.router' => \Dingo\Api\Routing\Router::class,
         'Dingo\Api\Routing\ResourceRegistrar' => \Dingo\Api\Routing\ResourceRegistrar::class,
         'api.url' => \Dingo\Api\Routing\UrlGenerator::class,

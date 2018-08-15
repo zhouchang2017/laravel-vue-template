@@ -11,11 +11,9 @@
 |
 */
 //Route::get('/test', 'TestController@index');
-Route::get('/test', function (\App\Modules\Scaffold\Services\AssetService $service) {
-//    $manually =  new ManuallyService();
+Route::get('/test', 'TestController@test');
 
-//    dd($manually->put());
-});
+Route::view('/','index');
 Route::get('/test/xsd', 'TestController@xsd');
 Route::get('/products', 'TestController@products');
 Route::get('/products/match', 'TestController@byAsins');

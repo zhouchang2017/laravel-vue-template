@@ -4,6 +4,7 @@ namespace App\Modules\Product\Models;
 
 
 //use App\Observers\ProductVariantObserver;
+use App\Modules\ProductProvider\Models\ProductProvider;
 use App\Modules\Scaffold\BaseModel as Model;
 class ProductVariant extends Model
 {
@@ -41,6 +42,21 @@ class ProductVariant extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function getNameAttribute()
+    {
+        return $this->product->name ?? '';
+    }
+
+    public function getTypeAttribute()
+    {
+        return $this->product->type ? $this->product->type->name : '暂无产品类型';
+    }
+
+    public function getBrandAttribute()
+    {
+        return $this->product->brand ? $this->product->brand->name : '暂无品牌';
+    }
+
     public function name()
     {
         return $this->product->name ?? '';
@@ -68,7 +84,7 @@ class ProductVariant extends Model
 
     public function providers()
     {
-        // return $this->belongsToMany(ProductProvider::class,'variant_provider')->withPivot('price')->withTimestamps();
+         return $this->belongsToMany(ProductProvider::class,'variant_provider')->withPivot('price')->withTimestamps();
     }
 
     public function createInfo($attributes)
