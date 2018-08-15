@@ -41,6 +41,21 @@ class ProductVariant extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function name()
+    {
+        return $this->product->name ?? '';
+    }
+
+    public function brand()
+    {
+        return $this->product->brand ? $this->product->brand->name : '暂无品牌';
+    }
+
+    public function type()
+    {
+        return $this->product->type ? $this->product->type->name : '暂无产品类型';
+    }
+
     public function info()
     {
         return $this->hasOne(ProductVariantInfo::class, 'product_variant_id', 'id');

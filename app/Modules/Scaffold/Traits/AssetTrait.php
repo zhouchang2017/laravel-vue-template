@@ -31,6 +31,7 @@ trait AssetTrait
             if (request($key) && count(request($key)) > 0) {
                 return app(AssetService::class)->store($this, request($key));
             }
+            return false;
         }
         throw new StoreResourceFailedException('model is not instanceof AssetRelation');
     }

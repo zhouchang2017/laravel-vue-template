@@ -9,7 +9,16 @@ class ProductVariantTransformer extends Transformer
 {
     protected $defaultIncludes = ['pivot'];
 
-    protected $availableIncludes = [ 'attributes', 'product', 'providers', 'plan_info', 'manually_info','name' ];
+    protected $availableIncludes = [
+        'attributes',
+        'product',
+        'providers',
+        'plan_info',
+        'manually_info',
+        'name',
+        'brand',
+        'type',
+    ];
 
     public function __construct($field = null)
     {
@@ -44,7 +53,17 @@ class ProductVariantTransformer extends Transformer
 
     public function includeName(ProductVariant $variant)
     {
-        return $this->primitive($variant->product->name);
+        return $this->primitive($variant->name());
+    }
+
+    public function includeBrand(ProductVariant $variant)
+    {
+        return $this->primitive($variant->brand());
+    }
+
+    public function includeType(ProductVariant $variant)
+    {
+        return $this->primitive($variant->type());
     }
 
     public function includeProviders(ProductVariant $variant)

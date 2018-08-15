@@ -190,7 +190,8 @@ class ProductService extends BaseService
             return $this->product;
         }catch (\Exception $exception){
             DB::rollBack();
-            Log::error('创建产品失败');
+            dd($exception);
+            Log::error('创建产品失败: ' . $exception->getMessage() . '');
         }
 
     }
